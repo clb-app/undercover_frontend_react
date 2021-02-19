@@ -1,6 +1,8 @@
 // import des packages
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Cookies from "js-cookie";
+import uid2 from "uid2";
 
 // import CSS
 import "./App.css";
@@ -16,12 +18,20 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 const App = () => {
+  const [token, setToken] = useState(Cookies.get("token") || null);
+
+  const setNewToken = (pseudo) => {
+    const token = uid2(16);
+    Cookies.set("token", token);
+    setToken(token);
+  };
+
   return (
     <Router>
       <Header />
       <Switch>
         <Route path="/">
-          <Home />
+          <Home setNewToken={setNewToken} />
         </Route>
         <Route path="/new">
           <NewParty />
