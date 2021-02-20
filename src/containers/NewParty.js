@@ -83,11 +83,18 @@ const NewParty = ({ player, api }) => {
       setIsPlayerUnknown(true);
     } else {
       try {
-        const response = await axios.post(`${api}/party/new`, {
-          player_id: player._id,
-          playerNumber: sliderValue,
-          roles,
-        });
+        const response = await axios.post(
+          `${api}/party/new`,
+          {
+            playerNumber: sliderValue,
+            roles,
+          },
+          {
+            headers: {
+              authorization: `Bearer ${player.token}`,
+            },
+          }
+        );
 
         if (response.status === 200) {
           history.push(`/party/${response.data.code}`);
