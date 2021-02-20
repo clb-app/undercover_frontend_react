@@ -22,13 +22,10 @@ const api = "http://localhost:3001";
 
 const App = () => {
   const [token, setToken] = useState(Cookies.get("token") || null);
-  const [user, setUser] = useState(null);
-
-  console.log(token);
+  const [player, setPlayer] = useState(null);
 
   useEffect(() => {
     if (token) {
-      console.log("if");
       (async () => {
         const response = await axios.get(`${api}/player`, {
           headers: {
@@ -36,50 +33,32 @@ const App = () => {
           },
         });
 
-        console.log(response);
         if (response.status === 200) {
-          setUser(response.data);
+          setPlayer(response.data);
         }
       })();
     }
   }, []);
 
-  const setNewUser = async (nickname, page) => {
-    const token = uid2(16);
-    Cookies.set("token", token);
-    setToken(token);
-
-    try {
-      const response = await axios.post(`${api}/player/new`, {
-        nickname,
-        token,
-      });
-
-      if (response.status === 200) {
-        setUser(response.data);
-      }
-    } catch (err) {
-      console.log(err);
-    }
+  const setPlayerToken = (t) => {
+    Cookies.set("token", t);
   };
-
-  console.log(user);
 
   return (
     <Router>
       <Header />
       <Switch>
         <Route path="/new">
-          <NewParty user={user} />
+          <NewParty player={player} />
         </Route>
         <Route path="/join">
-          <JoinParty user={user} />
+          <JoinParty player={player} />
         </Route>
         <Route path="/party/:code">
           <Party />
         </Route>
         <Route path="/">
-          <Home setNewUser={setNewUser} token={token} user={user} />
+          <Home player={player} />
         </Route>
       </Switch>
       <Footer />
