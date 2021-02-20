@@ -21,10 +21,17 @@ const JoinParty = ({ player, api }) => {
       setIsPlayerUnknown(true);
     } else {
       try {
-        const response = await axios.get(`${api}/party/join`, {
-          player_id: player._id,
-          code,
-        });
+        const response = await axios.get(
+          `${api}/party/join`,
+          {
+            code,
+          },
+          {
+            headers: {
+              authorization: `Bearer ${player.token}`,
+            },
+          }
+        );
 
         if (response.status === 200) {
           history.push(`/party/${code}`);
