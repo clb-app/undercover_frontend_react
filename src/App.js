@@ -52,7 +52,7 @@ const App = () => {
           <NewParty player={player} api={api} />
         </Route>
         <Route path="/join">
-          <JoinParty player={player} />
+          <JoinParty player={player} api={api} />
         </Route>
         <Route path="/party/:code">
           <Party />
