@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Slider from "@material-ui/core/Slider";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import uid2 from "uid2";
 
 // import CSS
 import "./NewParty.css";
@@ -10,10 +11,11 @@ import "./NewParty.css";
 import Button from "../components/Button";
 import EnterPseudo from "../components/EnterPseudo";
 
-const NewParty = ({ player, api }) => {
+const NewParty = ({ player, api, setPlayerToken }) => {
   const [sliderValue, setSliderValue] = useState(5);
   const [roles, setRoles] = useState({});
   const [isPlayerUnknown, setIsPlayerUnknown] = useState(false);
+  const [nickname, setNickname] = useState("");
 
   useEffect(() => {
     switch (sliderValue) {
@@ -105,6 +107,34 @@ const NewParty = ({ player, api }) => {
     }
   };
 
+  const handleSubmitWithPseudo = async () => {
+    const token = uid2(16);
+
+    setPlayerToken(token);
+
+    try {
+      const response = await axios.post(
+        `${api}/party/new`,
+        {
+          playerNumber: sliderValue,
+          roles,
+          nickname,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        history.push(`/party/${response.data.code}`);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="NewParty">
       <h2>{`${
@@ -128,7 +158,9 @@ const NewParty = ({ player, api }) => {
       <p>Undercovers : {roles.undercovers}</p>
       <p>Mr White : {roles.mrwhite}</p>
       <Button title="Valider" onClick={handleSubmit} />
-      {isPlayerUnknown && <EnterPseudo />}
+      {isPlayerUnknown && (
+        <EnterPseudo setInput={setNickname} onClick={handleSubmitWithPseudo} />
+      )}
     </div>
   );
 };
