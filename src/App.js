@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Cookies from "js-cookie";
-import uid2 from "uid2";
 import axios from "axios";
 
 // import CSS
@@ -49,7 +48,7 @@ const App = () => {
       {/* <Header /> */}
       <Switch>
         <Route path="/new">
-          <NewParty player={player} api={api} />
+          <NewParty player={player} api={api} setPlayerToken={setPlayerToken} />
         </Route>
         <Route path="/join">
           <JoinParty player={player} api={api} />
