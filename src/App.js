@@ -46,10 +46,10 @@ const App = () => {
 
   return (
     <Router>
-      <Header />
+      {/* <Header /> */}
       <Switch>
         <Route path="/new">
-          <NewParty player={player} />
+          <NewParty player={player} api={api} />
         </Route>
         <Route path="/join">
           <JoinParty player={player} />
@@ -61,7 +61,7 @@ const App = () => {
           <Home player={player} />
         </Route>
       </Switch>
-      <Footer />
+      {/* <Footer /> */}
     </Router>
   );
 };
