@@ -24,7 +24,7 @@ const App = () => {
   const [player, setPlayer] = useState(null);
 
   useEffect(() => {
-    if (token) {
+    if (token && !player) {
       (async () => {
         const response = await axios.get(`${api}/player`, {
           headers: {
@@ -58,7 +58,7 @@ const App = () => {
           />
         </Route>
         <Route path="/party/:code">
-          <Party />
+          <Party player={player} api={api} token={token} />
         </Route>
         <Route path="/">
           <Home player={player} />
