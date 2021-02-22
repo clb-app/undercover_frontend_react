@@ -88,7 +88,7 @@ const NewParty = ({ player, api, setPlayerToken }) => {
         const response = await axios.post(
           `${api}/party/new`,
           {
-            playerNumber: sliderValue,
+            playersNumber: sliderValue,
             roles,
           },
           {
@@ -116,7 +116,7 @@ const NewParty = ({ player, api, setPlayerToken }) => {
       const response = await axios.post(
         `${api}/party/new`,
         {
-          playerNumber: sliderValue,
+          playersNumber: sliderValue,
           roles,
           nickname,
         },
@@ -134,6 +134,8 @@ const NewParty = ({ player, api, setPlayerToken }) => {
       console.log(err);
     }
   };
+
+  console.log(sliderValue);
 
   return (
     <div className="NewParty">

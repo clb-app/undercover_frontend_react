@@ -33,7 +33,7 @@ const App = () => {
         });
 
         if (response.status === 200) {
-          setPlayer(response.data);
+          setPlayer(response.data.player);
         }
       })();
     }
@@ -51,7 +51,11 @@ const App = () => {
           <NewParty player={player} api={api} setPlayerToken={setPlayerToken} />
         </Route>
         <Route path="/join">
-          <JoinParty player={player} api={api} />
+          <JoinParty
+            player={player}
+            api={api}
+            setPlayerToken={setPlayerToken}
+          />
         </Route>
         <Route path="/party/:code">
           <Party />
