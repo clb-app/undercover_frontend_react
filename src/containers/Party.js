@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import socketClient from "socket.io-client";
 
 // import CSS
 import "./Party.css";
@@ -11,25 +12,21 @@ const Party = ({ player, api, token }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [party, setParty] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        console.log(token);
-        console.log(code);
-        const response = await axios.get(`${api}/party/status?code=${code}`, {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
+  const socket = socketClient(api, { transports: ["websocket"] });
 
-        if (response.status === 200) {
-          setParty(response.data);
+  useEffect(() => {
+    socket.emit("joinParty", { code, token });
+    socket.on("updateParty", (data) => {
+      for (let i = 0; i < data.players.length; i++) {
+        console.log("loop");
+        console.log(player);
+        if (data.players[i].token === token) {
+          setParty(data);
           setIsLoading(false);
+          break;
         }
-      } catch (err) {
-        console.log(err);
       }
-    })();
+    });
   }, []);
   return (
     <div className="Party">
