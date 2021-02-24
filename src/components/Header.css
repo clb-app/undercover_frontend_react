@@ -1,11 +1,12 @@
 /* HEADER component */
 .Header {
-  background-color: #00ffb2;
+  background-color: var(--green);
   height: 80px;
   /* text-align: center; */
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 50px;
 }
 .Header-title {
   border-bottom: 10px solid #fff;

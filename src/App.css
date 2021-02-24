@@ -1,13 +1,19 @@
 /* FONTS */
 
 /* COLORS */
-
+:root {
+  --green: #00ffb2;
+}
 /* GLOBAL */
 body {
 }
 .wrapper {
-  margin: 1200px;
+  max-width: 1200px;
+  margin: auto;
 }
 h1 {
   font-size: 40px;
+}
+h2 {
+  font-size: 30px;
 }

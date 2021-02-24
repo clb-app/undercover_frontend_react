@@ -19,15 +19,22 @@ const Home = ({ player }) => {
 
   return (
     <div className="Home">
-      <h2>Let's go</h2>
-      <Button
-        title="Tu veux créer une partie? C'est ici!"
-        onClick={handleNewParty}
-      />
-      <Button
-        title="Tu veux rejoindre une partie? C'est ici!"
-        onClick={handleJoinParty}
-      />
+      <h2 className="Home-title">
+        Crées ou rejoins une partie et éclates toi avec tes potes sur Undercover
+        !
+      </h2>
+      <div className="Home-buttons-container">
+        <Button
+          title="Tu veux créer une partie? C'est ici!"
+          onClick={handleNewParty}
+          width="400px"
+        />
+        <Button
+          title="Tu veux rejoindre une partie? C'est ici!"
+          onClick={handleJoinParty}
+          width="400px"
+        />
+      </div>
     </div>
   );
 };

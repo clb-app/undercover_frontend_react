@@ -1,7 +1,14 @@
 import React from "react";
 
-const Button = ({ title, onClick }) => {
-  return <button onClick={onClick}>{title}</button>;
+// import CSS
+import "./Button.css";
+
+const Button = ({ title, onClick, width }) => {
+  return (
+    <button onClick={onClick} style={{ width }}>
+      {title}
+    </button>
+  );
 };
 
 export default Button;

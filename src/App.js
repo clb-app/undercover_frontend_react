@@ -47,24 +47,30 @@ const App = () => {
   return (
     <Router>
       <Header />
-      <Switch>
-        <Route path="/new">
-          <NewParty player={player} api={api} setPlayerToken={setPlayerToken} />
-        </Route>
-        <Route path="/join">
-          <JoinParty
-            player={player}
-            api={api}
-            setPlayerToken={setPlayerToken}
-          />
-        </Route>
-        <Route path="/party/:code">
-          <Party player={player} api={api} token={token} />
-        </Route>
-        <Route path="/">
-          <Home player={player} />
-        </Route>
-      </Switch>
+      <div className="wrapper">
+        <Switch>
+          <Route path="/new">
+            <NewParty
+              player={player}
+              api={api}
+              setPlayerToken={setPlayerToken}
+            />
+          </Route>
+          <Route path="/join">
+            <JoinParty
+              player={player}
+              api={api}
+              setPlayerToken={setPlayerToken}
+            />
+          </Route>
+          <Route path="/party/:code">
+            <Party player={player} api={api} token={token} />
+          </Route>
+          <Route path="/">
+            <Home player={player} />
+          </Route>
+        </Switch>
+      </div>
       {/* <Footer /> */}
     </Router>
   );
