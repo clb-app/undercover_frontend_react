@@ -46,7 +46,7 @@ const App = () => {
 
   return (
     <Router>
-      {/* <Header /> */}
+      <Header />
       <Switch>
         <Route path="/new">
           <NewParty player={player} api={api} setPlayerToken={setPlayerToken} />
