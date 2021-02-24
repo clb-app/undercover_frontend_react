@@ -24,7 +24,8 @@ const App = () => {
   const [player, setPlayer] = useState(null);
 
   useEffect(() => {
-    if (token) {
+    if (token && !player) {
+      console.log("useeffect app");
       (async () => {
         const response = await axios.get(`${api}/player`, {
           headers: {
@@ -32,15 +33,18 @@ const App = () => {
           },
         });
 
+        console.log(response);
+
         if (response.status === 200) {
           setPlayer(response.data.player);
         }
       })();
     }
-  }, []);
+  }, [token]);
 
   const setPlayerToken = (t) => {
     Cookies.set("token", t);
+    setToken(t);
   };
 
   return (
@@ -58,7 +62,7 @@ const App = () => {
           />
         </Route>
         <Route path="/party/:code">
-          <Party />
+          <Party player={player} api={api} token={token} />
         </Route>
         <Route path="/">
           <Home player={player} />
