@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import socketClient from "socket.io-client";
 
 // import CSS
 import "./Party.css";
 
+// import des composants
+import Button from "../components/Button";
+
 const Party = ({ player, api, token }) => {
   const { code } = useParams();
+  const history = useHistory();
 
   const [isLoading, setIsLoading] = useState(true);
   const [party, setParty] = useState(null);
@@ -28,8 +32,16 @@ const Party = ({ player, api, token }) => {
       }
     });
   }, []);
+
+  const goBackHome = () => {
+    history.push("/");
+  };
+
   return (
     <div className="Party">
+      <div>
+        <Button title="Retour" onClick={goBackHome} />
+      </div>
       <h2>Liste des joueurs :</h2>
       {isLoading ? (
         <div>Chargement</div>
