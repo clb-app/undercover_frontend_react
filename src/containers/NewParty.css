@@ -1,0 +1,18 @@
+/* NEWPARTY */
+.NewParty-title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.NewParty-slider-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.NewParty-roles-container {
+  margin-top: 20px;
+}
+.NewParty-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}

@@ -3,6 +3,7 @@
 /* COLORS */
 :root {
   --green: #00ffb2;
+  --green-dark: #00bf82;
 }
 /* GLOBAL */
 body {
@@ -16,4 +17,7 @@ h1 {
 }
 h2 {
   font-size: 30px;
+}
+h4 {
+  font-size: 20px;
 }

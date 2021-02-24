@@ -139,7 +139,7 @@ const NewParty = ({ player, api, setPlayerToken }) => {
 
   return (
     <div className="NewParty">
-      <h2>{`${
+      <h2 className="NewParty-title">{`${
         player
           ? "Alors " +
             player.nickname +
@@ -147,19 +147,27 @@ const NewParty = ({ player, api, setPlayerToken }) => {
           : "Alors prêt à essayer?"
       }`}</h2>
       <h4>Nombre de joueurs ?</h4>
-      <Slider
-        style={{ width: "500px" }}
-        value={sliderValue}
-        valueLabelDisplay="on"
-        min={3}
-        max={20}
-        onChange={(e, value) => setSliderValue(value)}
-      />
+      <div className="NewParty-slider-container">
+        <div>3</div>
+        <Slider
+          style={{ width: "500px", margin: "20px", color: "#00bf82" }}
+          value={sliderValue}
+          valueLabelDisplay="on"
+          min={3}
+          max={20}
+          onChange={(e, value) => setSliderValue(value)}
+        />
+        <div>20</div>
+      </div>
       <h4>Les rôles ?</h4>
-      <p>Civils : {roles.civils}</p>
-      <p>Undercovers : {roles.undercovers}</p>
-      <p>Mr White : {roles.mrwhite}</p>
-      <Button title="Valider" onClick={handleSubmit} />
+      <div className="NewParty-roles-container">
+        <p>Civils : {roles.civils}</p>
+        <p>Undercovers : {roles.undercovers}</p>
+        <p>Mr White : {roles.mrwhite}</p>
+      </div>
+      <div className="NewParty-button">
+        <Button title="Valider" onClick={handleSubmit} />
+      </div>
       {isPlayerUnknown && (
         <EnterPseudo setInput={setNickname} onClick={handleSubmitWithPseudo} />
       )}

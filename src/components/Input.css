@@ -1,0 +1,14 @@
+.Input {
+  display: flex;
+  flex-direction: column;
+}
+.Input-label {
+  font-size: 18px;
+}
+.Input-input {
+  border: none;
+  border-bottom: 1px solid var(--green);
+  text-align: center;
+  margin-top: 20px;
+  font-style: italic;
+}

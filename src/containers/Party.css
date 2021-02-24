@@ -1,0 +1,9 @@
+.Party-code-container {
+  display: flex;
+  justify-content: flex-end;
+}
+.Party-playersList-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

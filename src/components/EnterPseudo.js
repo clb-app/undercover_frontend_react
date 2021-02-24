@@ -17,7 +17,7 @@ const EnterPseudo = ({ setInput, onClick }) => {
           setInput={setInput}
           type="text"
         />
-        <Button title="Valider" onClick={onClick} />
+        <Button title="Valider" onClick={onClick} width="200px" />
       </div>
     </div>
   );

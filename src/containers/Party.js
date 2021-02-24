@@ -50,11 +50,16 @@ const Party = ({ player, api, token }) => {
         <div>Chargement</div>
       ) : (
         <>
-          <h2>Liste des joueurs :</h2>
-          <div>
-            {party.players.length} / {playersNumber}
+          <div className="Party-code-container">
+            <div>Code de la partie : {party.code}</div>
           </div>
-          <div>{party.code}</div>
+          <div className="Party-playersList-container">
+            <h2>Liste des joueurs :</h2>
+            <div>
+              {party.players.length} / {playersNumber} joueurs
+            </div>
+          </div>
+
           {party.players.map((player) => {
             return <div key={player._id}>{player.nickname}</div>;
           })}
