@@ -15,15 +15,16 @@ const Party = ({ player, api, token }) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [party, setParty] = useState(null);
+  const [playersNumber, setPlayersNumber] = useState(1);
 
   const socket = socketClient(api, { transports: ["websocket"] });
 
   useEffect(() => {
     socket.emit("joinParty", { code, token });
     socket.on("updateParty", (data) => {
+      setPlayersNumber(data.players_number);
+      // console.log(data);
       for (let i = 0; i < data.players.length; i++) {
-        console.log("loop");
-        console.log(player);
         if (data.players[i].token === token) {
           setParty(data);
           setIsLoading(false);
@@ -37,18 +38,34 @@ const Party = ({ player, api, token }) => {
     history.push("/");
   };
 
+  console.log(player);
+
   return (
     <div className="Party">
       <div>
         <Button title="Retour" onClick={goBackHome} />
       </div>
-      <h2>Liste des joueurs :</h2>
+
       {isLoading ? (
         <div>Chargement</div>
       ) : (
-        party.players.map((player) => {
-          return <div key={player._id}>{player.nickname}</div>;
-        })
+        <>
+          <h2>Liste des joueurs :</h2>
+          <div>
+            {party.players.length} / {playersNumber}
+          </div>
+          <div>{party.code}</div>
+          {party.players.map((player) => {
+            return <div key={player._id}>{player.nickname}</div>;
+          })}
+          {party.players.length === playersNumber ? (
+            party.moderator_id === player._id && (
+              <Button title="Démarrer la partie" />
+            )
+          ) : (
+            <div>En attente d'autres joueurs ...</div>
+          )}
+        </>
       )}
     </div>
   );

@@ -25,15 +25,12 @@ const App = () => {
 
   useEffect(() => {
     if (token && !player) {
-      console.log("useeffect app");
       (async () => {
         const response = await axios.get(`${api}/player`, {
           headers: {
             authorization: `Bearer ${token}`,
           },
         });
-
-        console.log(response);
 
         if (response.status === 200) {
           setPlayer(response.data.player);
