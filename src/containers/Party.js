@@ -32,10 +32,15 @@ const Party = ({ player, api, token }) => {
         }
       }
     });
+    socket.on("server-startParty", () => {});
   }, []);
 
   const goBackHome = () => {
     history.push("/");
+  };
+
+  const handleStartParty = () => {
+    socket.emit("startParty", code);
   };
 
   console.log(player);
@@ -63,9 +68,10 @@ const Party = ({ player, api, token }) => {
           {party.players.map((player) => {
             return <div key={player._id}>{player.nickname}</div>;
           })}
-          {party.players.length === playersNumber ? (
+          {party.players.length === playersNumber && player ? (
+            // player &&
             party.moderator_id === player._id && (
-              <Button title="Démarrer la partie" />
+              <Button title="Démarrer la partie" onClick={handleStartParty} />
             )
           ) : (
             <div>En attente d'autres joueurs ...</div>
