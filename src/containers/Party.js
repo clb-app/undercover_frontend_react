@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams, useHistory } from "react-router-dom";
 import socketClient from "socket.io-client";
 
@@ -21,6 +20,7 @@ const Party = ({ player, api, token }) => {
   const [playerPlaying, setPlayerPlaying] = useState(null);
   const [input, setInput] = useState("");
   const [previousPlay, setPreviousPlay] = useState(null);
+  const [isLapOver, setIsLapOver] = useState(false);
 
   const socket = socketClient(api, { transports: ["websocket"] });
 
@@ -47,10 +47,21 @@ const Party = ({ player, api, token }) => {
             setPreviousPlay(party.players[i - 1]);
           }
           break;
+        } else {
+          setPreviousPlay(party.players[party.players.length - 1]);
+          setPlayerPlaying(null);
+          setTimeout(() => {
+            socket.emit("client-lapOver", party);
+          }, 10000);
         }
       }
 
       setIsPartyStarted(true);
+    });
+
+    socket.on("server-lapOver", (party) => {
+      setParty(party);
+      setIsLapOver(true);
     });
   }, []);
 
@@ -68,7 +79,9 @@ const Party = ({ player, api, token }) => {
 
   return (
     <div className="Party">
-      {isPartyStarted ? (
+      {isLapOver ? (
+        <h1>TIME TO VOTE!</h1>
+      ) : isPartyStarted ? (
         <>
           {party.players.map((player) => {
             return <div key={player._id}>{player.nickname}</div>;
@@ -79,13 +92,24 @@ const Party = ({ player, api, token }) => {
               {previousPlay.words[0]}
             </div>
           )}
-          {playerPlaying._id === player._id ? (
-            <>
-              <Input label="Mot" placeholder="Ex: chien" setInput={setInput} />
-              <Button title="Jouer" onClick={handlePlay} />
-            </>
+          {playerPlaying ? (
+            playerPlaying._id === player._id ? (
+              <>
+                <Input
+                  label="Mot"
+                  placeholder="Ex: chien"
+                  setInput={setInput}
+                />
+                <Button title="Jouer" onClick={handlePlay} />
+              </>
+            ) : (
+              <div>{playerPlaying.nickname} est en train de jouer ...</div>
+            )
           ) : (
-            <div>{playerPlaying.nickname} est en train de jouer ...</div>
+            <div>
+              Tu as retenu les mots de chacun ? Les votes ont lieu dans quelques
+              secondes ...
+            </div>
           )}
         </>
       ) : (
