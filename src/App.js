@@ -37,7 +37,7 @@ const App = () => {
         }
       })();
     }
-  }, [token]);
+  }, []);
 
   const setPlayerToken = (t) => {
     Cookies.set("token", t);

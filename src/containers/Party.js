@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import socketClient from "socket.io-client";
+import axios from "axios";
 
 // import CSS
 import "./Party.css";
@@ -21,6 +22,7 @@ const Party = ({ player, api, token }) => {
   const [input, setInput] = useState("");
   const [previousPlay, setPreviousPlay] = useState(null);
   const [isLapOver, setIsLapOver] = useState(false);
+  const [playerVoteAgainst, setPlayerVoteAgainst] = useState(null);
 
   const socket = socketClient(api, { transports: ["websocket"] });
 
@@ -47,7 +49,7 @@ const Party = ({ player, api, token }) => {
             setPreviousPlay(party.players[i - 1]);
           }
           break;
-        } else {
+        } else if (i + 1 === party.players.length) {
           setPreviousPlay(party.players[party.players.length - 1]);
           setPlayerPlaying(null);
           setTimeout(() => {
@@ -62,6 +64,9 @@ const Party = ({ player, api, token }) => {
     socket.on("server-lapOver", (party) => {
       setParty(party);
       setIsLapOver(true);
+      // setTimeout(() => {
+      //   socket.emit("client-closeVotes", playerVoteAgainst);
+      // }, 30000);
     });
   }, []);
 
@@ -77,10 +82,57 @@ const Party = ({ player, api, token }) => {
     socket.emit("client-play", input, playerPlaying);
   };
 
+  const handleVoteAgainst = async (id) => {
+    if (id !== player._id) {
+      console.log("if");
+      try {
+        const response = await axios.post(
+          `${api}/party/vote`,
+          {
+            _id: id,
+          },
+          {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          console.log(response.data);
+          setPlayerVoteAgainst(response.data);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  console.log(playerVoteAgainst);
+
   return (
     <div className="Party">
       {isLapOver ? (
-        <h1>TIME TO VOTE!</h1>
+        party.players.map((player) => {
+          // console.log(player);
+          return (
+            <div
+              key={player._id}
+              onClick={() => handleVoteAgainst(player._id)}
+              style={
+                playerVoteAgainst
+                  ? playerVoteAgainst._id === player._id
+                    ? {
+                        background: "red",
+                      }
+                    : { background: "#fff" }
+                  : { background: "#fff" }
+              }
+            >
+              {player.nickname}
+            </div>
+          );
+        })
       ) : isPartyStarted ? (
         <>
           {party.players.map((player) => {
