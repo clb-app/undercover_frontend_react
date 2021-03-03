@@ -99,7 +99,7 @@ const NewParty = ({ player, api, setPlayerToken }) => {
         );
 
         if (response.status === 200) {
-          history.push(`/party/${response.data.code}`);
+          history.push(`/party/${response.data.party.code}`);
         }
       } catch (err) {
         console.log(err);
@@ -109,8 +109,6 @@ const NewParty = ({ player, api, setPlayerToken }) => {
 
   const handleSubmitWithPseudo = async () => {
     const token = uid2(16);
-
-    setPlayerToken(token);
 
     try {
       const response = await axios.post(
@@ -127,8 +125,11 @@ const NewParty = ({ player, api, setPlayerToken }) => {
         }
       );
 
+      console.log(response.data.party.code);
+
       if (response.status === 200) {
-        history.push(`/party/${response.data.code}`);
+        setPlayerToken(token, response.data.player);
+        history.push(`/party/${response.data.party.code}`);
       }
     } catch (err) {
       console.log(err);

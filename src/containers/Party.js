@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import socketClient from "socket.io-client";
 import axios from "axios";
+import { Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 
 // import CSS
 import "./Party.css";
@@ -14,6 +15,9 @@ const Party = ({ player, api, token }) => {
   const { code } = useParams();
   const history = useHistory();
 
+  console.log(player);
+  console.log(token);
+
   const [isLoading, setIsLoading] = useState(true);
   const [party, setParty] = useState(null);
   const [playersNumber, setPlayersNumber] = useState(1);
@@ -23,16 +27,26 @@ const Party = ({ player, api, token }) => {
   const [previousPlay, setPreviousPlay] = useState(null);
   const [isLapOver, setIsLapOver] = useState(false);
   const [playerVoteAgainst, setPlayerVoteAgainst] = useState(null);
-
-  const socket = socketClient(api, { transports: ["websocket"] });
+  const [minutes, setMinutes] = useState(1);
+  const [seconds, setSeconds] = useState(0);
+  const [isTimerActive, setIsTimerActive] = useState(false);
+  const [isResultDisplayed, setIsResultDisplayed] = useState(false);
 
   useEffect(() => {
-    socket.emit("joinParty", { code, token });
+    const socket = socketClient(api, { transports: ["websocket"] });
+    console.log("first useEffect");
+    if (isLoading) {
+      console.log("first emit");
+      socket.emit("joinParty", { code, token });
+    }
+
     socket.on("updateParty", (data) => {
+      console.log(data);
       setPlayersNumber(data.players_number);
       // console.log(data);
       for (let i = 0; i < data.players.length; i++) {
         if (data.players[i].token === token) {
+          console.log("if");
           setParty(data);
           setIsLoading(false);
           break;
@@ -54,7 +68,7 @@ const Party = ({ player, api, token }) => {
           setPlayerPlaying(null);
           setTimeout(() => {
             socket.emit("client-lapOver", party);
-          }, 10000);
+          }, 3000);
         }
       }
 
@@ -68,17 +82,50 @@ const Party = ({ player, api, token }) => {
       //   socket.emit("client-closeVotes", playerVoteAgainst);
       // }, 30000);
     });
+
+    socket.on("server-startTimer", (mins) => {
+      setIsTimerActive(true);
+      setMinutes(mins - 1);
+      setSeconds(59);
+    });
   }, []);
+
+  useEffect(() => {
+    if (isTimerActive) {
+      const timer = setInterval(() => {
+        if (
+          (minutes === 1 ||
+            minutes === 2 ||
+            minutes === 3 ||
+            minutes === 4 ||
+            minutes === 5) &&
+          seconds === 0
+        ) {
+          setMinutes(minutes - 1);
+          setSeconds(59);
+        } else if (minutes === 0 && seconds === 0) {
+          handleCloseVotesAndShowResults();
+          setIsTimerActive(false);
+        } else {
+          setSeconds(seconds - 1);
+        }
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [seconds]);
 
   const goBackHome = () => {
     history.push("/");
   };
 
   const handleStartParty = () => {
+    const socket = socketClient(api, { transports: ["websocket"] });
     socket.emit("startParty", code);
   };
 
   const handlePlay = () => {
+    const socket = socketClient(api, { transports: ["websocket"] });
     socket.emit("client-play", input, playerPlaying);
   };
 
@@ -108,31 +155,79 @@ const Party = ({ player, api, token }) => {
     }
   };
 
-  console.log(playerVoteAgainst);
+  const handleCountDown = () => {
+    const socket = socketClient(api, { transports: ["websocket"] });
+    socket.emit("client-startTimer", minutes);
+  };
+
+  const handleCloseVotesAndShowResults = async () => {
+    try {
+      const response = await axios.post(`${api}/party/results`, {
+        _id: party._id,
+      });
+
+      console.log(response);
+      if (response.status === 200) {
+        setIsResultDisplayed(true);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="Party">
-      {isLapOver ? (
-        party.players.map((player) => {
-          // console.log(player);
-          return (
-            <div
-              key={player._id}
-              onClick={() => handleVoteAgainst(player._id)}
-              style={
-                playerVoteAgainst
-                  ? playerVoteAgainst._id === player._id
-                    ? {
-                        background: "red",
-                      }
+      {isResultDisplayed ? (
+        <div>Results</div>
+      ) : isLapOver ? (
+        <>
+          {party.players.map((player) => {
+            // console.log(player);
+            return (
+              <div
+                key={player._id}
+                onClick={() => handleVoteAgainst(player._id)}
+                style={
+                  playerVoteAgainst
+                    ? playerVoteAgainst._id === player._id
+                      ? {
+                          background: "red",
+                        }
+                      : { background: "#fff" }
                     : { background: "#fff" }
-                  : { background: "#fff" }
-              }
-            >
-              {player.nickname}
+                }
+              >
+                {player.nickname}
+              </div>
+            );
+          })}
+          {isTimerActive ? (
+            <div>
+              {minutes} : {seconds < 10 ? `0${seconds}` : seconds}
             </div>
-          );
-        })
+          ) : (
+            party.moderator_id === player._id && (
+              <>
+                <FormControl>
+                  <InputLabel id="select-minutes">Minutes</InputLabel>
+                  <Select
+                    labelId="select-minutes"
+                    id="select-minutes"
+                    value={minutes}
+                    onChange={(e) => setMinutes(e.target.value)}
+                  >
+                    <MenuItem value={1}>1</MenuItem>
+                    <MenuItem value={2}>2</MenuItem>
+                    <MenuItem value={3}>3</MenuItem>
+                    <MenuItem value={4}>4</MenuItem>
+                    <MenuItem value={5}>5</MenuItem>
+                  </Select>
+                </FormControl>
+                <Button title="Démarrer le timer" onClick={handleCountDown} />
+              </>
+            )
+          )}
+        </>
       ) : isPartyStarted ? (
         <>
           {party.players.map((player) => {
@@ -202,6 +297,7 @@ const Party = ({ player, api, token }) => {
           )}
         </>
       )}
+      {/* // {} */}
     </div>
   );
 };
