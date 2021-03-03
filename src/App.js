@@ -39,10 +39,13 @@ const App = () => {
     }
   }, []);
 
-  const setPlayerToken = (t) => {
+  const setPlayerToken = (t, p) => {
+    setPlayer(p);
     Cookies.set("token", t);
     setToken(t);
   };
+
+  console.log(player);
 
   return (
     <Router>

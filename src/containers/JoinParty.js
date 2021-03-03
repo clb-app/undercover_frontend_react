@@ -42,7 +42,6 @@ const JoinParty = ({ player, api, setPlayerToken }) => {
   const handleSubmitWithPseudo = async () => {
     if (nickname.length > 1) {
       const token = uid2(16);
-      setPlayerToken(token);
 
       try {
         const response = await axios.get(
@@ -55,7 +54,8 @@ const JoinParty = ({ player, api, setPlayerToken }) => {
         );
 
         if (response.status === 200) {
-          history.push(`/party/${response.data.code}`);
+          setPlayerToken(token, response.data.player);
+          history.push(`/party/${response.data.party.code}`);
         }
       } catch (err) {
         console.log(err);
