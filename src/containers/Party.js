@@ -31,6 +31,8 @@ const Party = ({ player, api, token }) => {
   const [seconds, setSeconds] = useState(0);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [isResultDisplayed, setIsResultDisplayed] = useState(false);
+  const [eliminatedPlayer, setEliminatedPlayer] = useState({});
+  const [next, setNext] = useState(null);
 
   useEffect(() => {
     const socket = socketClient(api, { transports: ["websocket"] });
@@ -166,8 +168,9 @@ const Party = ({ player, api, token }) => {
         _id: party._id,
       });
 
-      console.log(response);
       if (response.status === 200) {
+        setEliminatedPlayer(response.data.eliminatedPlayer);
+        setNext(response.data.next);
         setIsResultDisplayed(true);
       }
     } catch (err) {
@@ -178,9 +181,25 @@ const Party = ({ player, api, token }) => {
   return (
     <div className="Party">
       {isResultDisplayed ? (
-        <div>Results</div>
-      ) : isLapOver ? (
         <>
+          <div>
+            {eliminatedPlayer.nickname} a été éliminé, il s'agissait d'un{" "}
+            {eliminatedPlayer.role}
+          </div>
+          {next === "WHITE" ? (
+            player._id === eliminatedPlayer._id && (
+              <div>Input pour écrire le mot des civils</div>
+            )
+          ) : next === "OVER" ? (
+            <div>Victoire des undercovers! On rejoue ?</div>
+          ) : next === "NEXT" ? (
+            <div>Go prochain tour</div>
+          ) : (
+            <div>Victoire des civils! On rejoue ?</div>
+          )}
+        </>
+      ) : isLapOver ? (
+        <div>
           {party.players.map((player) => {
             // console.log(player);
             return (
@@ -227,7 +246,7 @@ const Party = ({ player, api, token }) => {
               </>
             )
           )}
-        </>
+        </div>
       ) : isPartyStarted ? (
         <>
           {party.players.map((player) => {
