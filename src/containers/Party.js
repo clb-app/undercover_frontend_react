@@ -15,9 +15,6 @@ const Party = ({ player, api, token }) => {
   const { code } = useParams();
   const history = useHistory();
 
-  console.log(player);
-  console.log(token);
-
   const [isLoading, setIsLoading] = useState(true);
   const [party, setParty] = useState(null);
   const [playersNumber, setPlayersNumber] = useState(1);
@@ -33,33 +30,40 @@ const Party = ({ player, api, token }) => {
   const [isResultDisplayed, setIsResultDisplayed] = useState(false);
   const [eliminatedPlayer, setEliminatedPlayer] = useState({});
   const [next, setNext] = useState(null);
+  const [mrWhiteWord, setMrWhiteWord] = useState("");
+  const [isMrWhiteSubmitted, setIsMrWhiteSubmitted] = useState(false);
 
   useEffect(() => {
     const socket = socketClient(api, { transports: ["websocket"] });
-    console.log("first useEffect");
     if (isLoading) {
-      console.log("first emit");
       socket.emit("joinParty", { code, token });
     }
 
     socket.on("updateParty", (data) => {
-      console.log(data);
       setPlayersNumber(data.players_number);
-      // console.log(data);
       for (let i = 0; i < data.players.length; i++) {
         if (data.players[i].token === token) {
-          console.log("if");
           setParty(data);
           setIsLoading(false);
           break;
         }
       }
     });
+
     socket.on("server-startParty", (party) => {
       setParty(party);
-
+      setPlayerPlaying(null);
+      setPreviousPlay(null);
+      setIsLapOver(false);
+      setPlayerVoteAgainst(null);
+      setIsResultDisplayed(false);
+      setEliminatedPlayer({});
+      setIsTimerActive(false);
+      setMinutes(1);
+      setSeconds(0);
+      setNext(null);
       for (let i = 0; i < party.players.length; i++) {
-        if (!party.players[i].isAlreadyPlayed) {
+        if (!party.players[i].isAlreadyPlayed && party.players[i].alive) {
           setPlayerPlaying(party.players[i]);
           if (i > 0) {
             setPreviousPlay(party.players[i - 1]);
@@ -106,8 +110,10 @@ const Party = ({ player, api, token }) => {
           setMinutes(minutes - 1);
           setSeconds(59);
         } else if (minutes === 0 && seconds === 0) {
+          console.log("minute 0 & second 0");
           handleCloseVotesAndShowResults();
           setIsTimerActive(false);
+          clearInterval(timer);
         } else {
           setSeconds(seconds - 1);
         }
@@ -122,6 +128,7 @@ const Party = ({ player, api, token }) => {
   };
 
   const handleStartParty = () => {
+    console.log("start");
     const socket = socketClient(api, { transports: ["websocket"] });
     socket.emit("startParty", code);
   };
@@ -132,8 +139,7 @@ const Party = ({ player, api, token }) => {
   };
 
   const handleVoteAgainst = async (id) => {
-    if (id !== player._id) {
-      console.log("if");
+    if (id !== player._id && player.alive) {
       try {
         const response = await axios.post(
           `${api}/party/vote`,
@@ -148,7 +154,6 @@ const Party = ({ player, api, token }) => {
         );
 
         if (response.status === 200) {
-          console.log(response.data);
           setPlayerVoteAgainst(response.data);
         }
       } catch (err) {
@@ -178,6 +183,19 @@ const Party = ({ player, api, token }) => {
     }
   };
 
+  const handleMrWhiteWord = () => {
+    // socket emit client to server
+    // io emit server to client
+  };
+
+  const handleNextLap = () => {
+    console.log("clicked");
+    const socket = socketClient(api, { transports: ["websocket"] });
+    socket.emit("client-nextLap", party, eliminatedPlayer);
+  };
+
+  console.log("previousPlay =", previousPlay);
+
   return (
     <div className="Party">
       {isResultDisplayed ? (
@@ -188,20 +206,35 @@ const Party = ({ player, api, token }) => {
           </div>
           {next === "WHITE" ? (
             player._id === eliminatedPlayer._id && (
-              <div>Input pour écrire le mot des civils</div>
+              <div>
+                <h2>
+                  Tu as été découvert, tentes ta chance et essayes de découvrir
+                  le mot des civils pour gagner
+                </h2>
+                <Input setInput={setMrWhiteWord} />
+                <Button title="Valider" onClick={handleMrWhiteWord} />
+              </div>
             )
           ) : next === "OVER" ? (
-            <div>Victoire des undercovers! On rejoue ?</div>
+            <div>
+              <h2>Victoire des undercovers! On rejoue ?</h2>
+              <Button title="Rejouer" onClick={goBackHome} />
+            </div>
           ) : next === "NEXT" ? (
-            <div>Go prochain tour</div>
+            player._id === party.moderator_id && (
+              <Button title="Next" onClick={handleNextLap} />
+            )
           ) : (
-            <div>Victoire des civils! On rejoue ?</div>
+            <div>
+              <h2>Victoire des civils! On rejoue ?</h2>
+              <Button title="Rejouer" onClick={goBackHome} />
+            </div>
           )}
+          {/* {isMrWhiteSubmitted && <div>Le mot ta</div>} */}
         </>
       ) : isLapOver ? (
         <div>
           {party.players.map((player) => {
-            // console.log(player);
             return (
               <div
                 key={player._id}
