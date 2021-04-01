@@ -1,4 +1,5 @@
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import { useState } from "react";
 
 // import CSS
 import "./Home.css";
@@ -6,8 +7,16 @@ import "./Home.css";
 // import des composants
 import Button from "../components/Button";
 
-const Home = ({ player }) => {
+const Home = ({ player, setReload }) => {
   const history = useHistory();
+  const location = useLocation();
+
+  const [isAlreadyReloaded, setIsAlreadyReloaded] = useState(false);
+
+  if (location.state === "reload" && !isAlreadyReloaded) {
+    setReload(true);
+    setIsAlreadyReloaded(true);
+  }
 
   const handleNewParty = () => {
     history.push("/new");
