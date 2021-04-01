@@ -32,6 +32,7 @@ const Party = ({ player, api, token }) => {
   const [next, setNext] = useState(null);
   const [mrWhiteWord, setMrWhiteWord] = useState("");
   const [isMrWhiteSubmitted, setIsMrWhiteSubmitted] = useState(false);
+  const [words, setWords] = useState([]);
 
   useEffect(() => {
     const socket = socketClient(api, { transports: ["websocket"] });
@@ -145,6 +146,9 @@ const Party = ({ player, api, token }) => {
 
   const handlePlay = () => {
     const socket = socketClient(api, { transports: ["websocket"] });
+    const newWords = [...words];
+    newWords.push(input);
+    setWords(newWords);
     socket.emit("client-play", input, playerPlaying);
   };
 
@@ -204,7 +208,7 @@ const Party = ({ player, api, token }) => {
     socket.emit("client-nextLap", party, eliminatedPlayer);
   };
 
-  console.log("previousPlay =", previousPlay);
+  console.log("player =", player);
 
   return (
     <div className="Party">
@@ -294,6 +298,10 @@ const Party = ({ player, api, token }) => {
         <>
           {party.players.map((player) => {
             return <div key={player._id}>{player.nickname}</div>;
+          })}
+          <h2>Mes mots déjà joués :</h2>
+          {words.map((word, index) => {
+            return <p key={index}>{word}</p>;
           })}
           {previousPlay && previousPlay.nickname && (
             <div>
