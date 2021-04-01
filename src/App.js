@@ -22,9 +22,10 @@ const api = "http://localhost:3001";
 const App = () => {
   const [token, setToken] = useState(Cookies.get("token") || null);
   const [player, setPlayer] = useState(null);
+  const [reload, setReload] = useState(true);
 
   useEffect(() => {
-    if (token && !player) {
+    if (token && reload) {
       (async () => {
         const response = await axios.get(`${api}/player`, {
           headers: {
@@ -34,10 +35,11 @@ const App = () => {
 
         if (response.status === 200) {
           setPlayer(response.data.player);
+          setReload(false);
         }
       })();
     }
-  }, []);
+  }, [reload]);
 
   const setPlayerToken = (t, p) => {
     setPlayer(p);
@@ -70,7 +72,7 @@ const App = () => {
             <Party player={player} api={api} token={token} />
           </Route>
           <Route path="/">
-            <Home player={player} />
+            <Home player={player} setReload={setReload} />
           </Route>
         </Switch>
       </div>

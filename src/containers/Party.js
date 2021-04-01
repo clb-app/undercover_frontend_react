@@ -135,7 +135,7 @@ const Party = ({ player, api, token }) => {
   }, [seconds]);
 
   const goBackHome = () => {
-    history.push("/");
+    history.push({ pathname: "/", state: "reload" });
   };
 
   const handleStartParty = () => {
