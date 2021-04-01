@@ -10,6 +10,8 @@ import "./Party.css";
 // import des composants
 import Button from "../components/Button";
 import Input from "../components/Input";
+import PartyInProgress from "../components/PartyInProgress";
+import Timer from "../components/Timer.js";
 
 const Party = ({ player, api, token }) => {
   const { code } = useParams();
@@ -248,6 +250,7 @@ const Party = ({ player, api, token }) => {
         </>
       ) : isLapOver ? (
         <div>
+          <h2>Votes :</h2>
           {party.players.map((player) => {
             return (
               <div
@@ -267,7 +270,18 @@ const Party = ({ player, api, token }) => {
               </div>
             );
           })}
-          {isTimerActive ? (
+          {
+            <Timer
+              isTimerActive={isTimerActive}
+              minutes={minutes}
+              seconds={seconds}
+              party={party}
+              player={player}
+              setMinutes={setMinutes}
+              handleCountDown={handleCountDown}
+            />
+          }
+          {/* {isTimerActive ? (
             <div>
               {minutes} : {seconds < 10 ? `0${seconds}` : seconds}
             </div>
@@ -292,44 +306,54 @@ const Party = ({ player, api, token }) => {
                 <Button title="Démarrer le timer" onClick={handleCountDown} />
               </>
             )
-          )}
+          )} */}
         </div>
       ) : isPartyStarted ? (
-        <>
-          {party.players.map((player) => {
-            return <div key={player._id}>{player.nickname}</div>;
-          })}
-          <h2>Mes mots déjà joués :</h2>
-          {words.map((word, index) => {
-            return <p key={index}>{word}</p>;
-          })}
-          {previousPlay && previousPlay.nickname && (
-            <div>
-              Dernier mot joué par {previousPlay.nickname} est{" "}
-              {previousPlay.value}
-            </div>
-          )}
-          {playerPlaying ? (
-            playerPlaying._id === player._id ? (
-              <>
-                <Input
-                  label="Mot"
-                  placeholder="Ex: chien"
-                  setInput={setInput}
-                />
-                <Button title="Jouer" onClick={handlePlay} />
-              </>
-            ) : (
-              <div>{playerPlaying.nickname} est en train de jouer ...</div>
-            )
-          ) : (
-            <div>
-              Tu as retenu les mots de chacun ? Les votes ont lieu dans quelques
-              secondes ...
-            </div>
-          )}
-        </>
+        <PartyInProgress
+          party={party}
+          previousPlay={previousPlay}
+          playerPlaying={playerPlaying}
+          words={words}
+          player={player}
+          setInput={setInput}
+          handlePlay={handlePlay}
+        />
       ) : (
+        //   <>
+        //   <h2>Liste des joueurs :</h2>
+        //   {party.players.map((player) => {
+        //     return <div key={player._id}>{player.nickname}</div>;
+        //   })}
+        //   <h2>Mes mots déjà joués :</h2>
+        //   {words.map((word, index) => {
+        //     return <p key={index}>{word}</p>;
+        //   })}
+        //   {previousPlay && previousPlay.nickname && (
+        //     <div>
+        //       Dernier mot joué par {previousPlay.nickname} est{" "}
+        //       {previousPlay.value}
+        //     </div>
+        //   )}
+        //   {playerPlaying ? (
+        //     playerPlaying._id === player._id ? (
+        //       <>
+        //         <Input
+        //           label="Mot"
+        //           placeholder="Ex: chien"
+        //           setInput={setInput}
+        //         />
+        //         <Button title="Jouer" onClick={handlePlay} />
+        //       </>
+        //     ) : (
+        //       <div>{playerPlaying.nickname} est en train de jouer ...</div>
+        //     )
+        //   ) : (
+        //     <div>
+        //       Tu as retenu les mots de chacun ? Les votes ont lieu dans quelques
+        //       secondes ...
+        //     </div>
+        //   )}
+        // </>
         <>
           <div>
             <Button title="Retour" onClick={goBackHome} />
