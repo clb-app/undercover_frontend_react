@@ -1,6 +1,7 @@
 .Input {
   display: flex;
   flex-direction: column;
+  /* align-items: center; */
 }
 .Input-label {
   font-size: 18px;
