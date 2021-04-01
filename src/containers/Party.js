@@ -50,36 +50,46 @@ const Party = ({ player, api, token }) => {
       }
     });
 
-    socket.on("server-startParty", (party) => {
-      setParty(party);
-      setPlayerPlaying(null);
-      setPreviousPlay(null);
-      setIsLapOver(false);
-      setPlayerVoteAgainst(null);
-      setIsResultDisplayed(false);
-      setEliminatedPlayer({});
-      setIsTimerActive(false);
-      setMinutes(1);
-      setSeconds(0);
-      setNext(null);
-      for (let i = 0; i < party.players.length; i++) {
-        if (!party.players[i].isAlreadyPlayed && party.players[i].alive) {
-          setPlayerPlaying(party.players[i]);
-          if (i > 0) {
-            setPreviousPlay(party.players[i - 1]);
-          }
-          break;
-        } else if (i + 1 === party.players.length) {
-          setPreviousPlay(party.players[party.players.length - 1]);
-          setPlayerPlaying(null);
-          setTimeout(() => {
-            socket.emit("client-lapOver", party);
-          }, 3000);
-        }
-      }
+    socket.on(
+      "server-startParty",
+      (party, previousValue, previousPlayerNickname) => {
+        setParty(party);
+        setPlayerPlaying(null);
+        setPreviousPlay(null);
+        setIsLapOver(false);
+        setPlayerVoteAgainst(null);
+        setIsResultDisplayed(false);
+        setEliminatedPlayer({});
+        setIsTimerActive(false);
+        setMinutes(1);
+        setSeconds(0);
+        setNext(null);
 
-      setIsPartyStarted(true);
-    });
+        for (let i = 0; i < party.players.length; i++) {
+          if (!party.players[i].isAlreadyPlayed && party.players[i].alive) {
+            setPlayerPlaying(party.players[i]);
+            if (i > 0) {
+              setPreviousPlay({
+                value: previousValue,
+                nickname: previousPlayerNickname,
+              });
+            }
+            break;
+          } else if (i + 1 === party.players.length) {
+            setPreviousPlay({
+              value: previousValue,
+              nickname: previousPlayerNickname,
+            });
+            setPlayerPlaying(null);
+            setTimeout(() => {
+              socket.emit("client-lapOver", party);
+            }, 3000);
+          }
+        }
+
+        setIsPartyStarted(true);
+      }
+    );
 
     socket.on("server-lapOver", (party) => {
       setParty(party);
@@ -285,10 +295,10 @@ const Party = ({ player, api, token }) => {
           {party.players.map((player) => {
             return <div key={player._id}>{player.nickname}</div>;
           })}
-          {previousPlay && (
+          {previousPlay && previousPlay.nickname && (
             <div>
               Dernier mot joué par {previousPlay.nickname} est{" "}
-              {previousPlay.words[0]}
+              {previousPlay.value}
             </div>
           )}
           {playerPlaying ? (
