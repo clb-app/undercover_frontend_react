@@ -23,6 +23,7 @@ const Party = ({ player, api, token }) => {
   const [isPartyStarted, setIsPartyStarted] = useState(false);
   const [playerPlaying, setPlayerPlaying] = useState(null);
   const [input, setInput] = useState("");
+  const [errorInput, setErrorInput] = useState("");
   const [previousPlay, setPreviousPlay] = useState(null);
   const [isLapOver, setIsLapOver] = useState(false);
   const [playerVoteAgainst, setPlayerVoteAgainst] = useState(null);
@@ -155,10 +156,25 @@ const Party = ({ player, api, token }) => {
 
   const handlePlay = () => {
     const socket = socketClient(api, { transports: ["websocket"] });
-    const newWords = [...words];
-    newWords.push(input);
-    setWords(newWords);
-    socket.emit("client-play", input, playerPlaying);
+    const inputValue = input.toLowerCase();
+    for (let i = 0; i < party.wordsAlreadyUsed.length; i++) {
+      console.log();
+      if (party.wordsAlreadyUsed[i] === inputValue) {
+        setErrorInput(`Le mot ${inputValue} a déjà été joué.`);
+        break;
+      } else if (i + 1 === party.wordsAlreadyUsed.length) {
+        const newWords = [...words];
+        newWords.push(inputValue);
+        setWords(newWords);
+        socket.emit("client-play", inputValue, playerPlaying);
+      }
+    }
+    if (party.wordsAlreadyUsed.length === 0) {
+      const newWords = [...words];
+      newWords.push(inputValue);
+      setWords(newWords);
+      socket.emit("client-play", inputValue, playerPlaying);
+    }
   };
 
   const handleVoteAgainst = async (id) => {
@@ -330,6 +346,7 @@ const Party = ({ player, api, token }) => {
           setInput={setInput}
           handlePlay={handlePlay}
           myWord={myWord}
+          errorInput={errorInput}
         />
       ) : (
         //   <>

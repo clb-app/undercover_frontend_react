@@ -11,3 +11,6 @@
 .PartyInProgress_lastWord_text {
   margin-bottom: 20px;
 }
+.PartyInProgress_errorInput_text {
+  color: red;
+}
