@@ -223,6 +223,14 @@ const Party = ({ player, api, token }) => {
           <div>
             {eliminatedPlayer.nickname} a été éliminé, il s'agissait d'un{" "}
             {eliminatedPlayer.role}
+            <div>
+              <h4>
+                Personnes ayant votés contre {eliminatedPlayer.nickname} :
+              </h4>
+              {eliminatedPlayer.votes.map((item) => {
+                return <p key={item._id}>{item.nickname}</p>;
+              })}
+            </div>
           </div>
           {next === "WHITE" ? (
             player._id === eliminatedPlayer._id && (
