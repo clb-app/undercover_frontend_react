@@ -17,8 +17,8 @@ import Party from "./containers/Party";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
-const api = "http://localhost:3001"; // local
-// const api = "https://clb-undercover-nodejs.herokuapp.com"; // prod
+// const api = "http://localhost:3001"; // local
+const api = "https://clb-undercover-nodejs.herokuapp.com"; // prod
 
 const App = () => {
   const [token, setToken] = useState(Cookies.get("token") || null);
