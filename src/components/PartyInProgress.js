@@ -13,6 +13,7 @@ const PartyInProgress = ({
   player,
   setInput,
   handlePlay,
+  myWord,
 }) => {
   return (
     <div className="PartyInProgress">
@@ -24,6 +25,9 @@ const PartyInProgress = ({
           })}
         </div>
         <div>
+          <h3>
+            {myWord ? `Votre mot est ${myWord}` : "Vous êtes Mr White :)"}
+          </h3>
           <h2>Mes mots déjà joués :</h2>
           {words.map((word, index) => {
             return <p key={index}>{word}</p>;
