@@ -14,6 +14,7 @@ const PartyInProgress = ({
   setInput,
   handlePlay,
   myWord,
+  errorInput,
 }) => {
   return (
     <div className="PartyInProgress">
@@ -44,7 +45,14 @@ const PartyInProgress = ({
         {playerPlaying ? (
           playerPlaying._id === player._id ? (
             <>
-              <Input label="Mot" placeholder="Ex: chien" setInput={setInput} />
+              {errorInput && (
+                <p className="PartyInProgress_errorInput_text">{errorInput}</p>
+              )}
+              <Input
+                label="À ton tour de jouer"
+                placeholder="Ex: chien"
+                setInput={setInput}
+              />
               <Button title="Jouer" onClick={handlePlay} />
             </>
           ) : (
