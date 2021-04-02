@@ -35,6 +35,7 @@ const Party = ({ player, api, token }) => {
   const [mrWhiteWord, setMrWhiteWord] = useState("");
   const [isMrWhiteSubmitted, setIsMrWhiteSubmitted] = useState(false);
   const [words, setWords] = useState([]);
+  const [myWord, setMyWord] = useState(null);
 
   useEffect(() => {
     const socket = socketClient(api, { transports: ["websocket"] });
@@ -55,7 +56,7 @@ const Party = ({ player, api, token }) => {
 
     socket.on(
       "server-startParty",
-      (party, previousValue, previousPlayerNickname) => {
+      async (party, previousValue, previousPlayerNickname) => {
         setParty(party);
         setPlayerPlaying(null);
         setPreviousPlay(null);
@@ -67,6 +68,14 @@ const Party = ({ player, api, token }) => {
         setMinutes(1);
         setSeconds(0);
         setNext(null);
+
+        if (!myWord) {
+          for (let i = 0; i < party.players.length; i++) {
+            if (token === party.players[i].token) {
+              setMyWord(party.players[i].word);
+            }
+          }
+        }
 
         for (let i = 0; i < party.players.length; i++) {
           if (!party.players[i].isAlreadyPlayed && party.players[i].alive) {
@@ -123,7 +132,6 @@ const Party = ({ player, api, token }) => {
           setMinutes(minutes - 1);
           setSeconds(59);
         } else if (minutes === 0 && seconds === 0) {
-          console.log("minute 0 & second 0");
           handleCloseVotesAndShowResults();
           setIsTimerActive(false);
           clearInterval(timer);
@@ -141,7 +149,6 @@ const Party = ({ player, api, token }) => {
   };
 
   const handleStartParty = () => {
-    console.log("start");
     const socket = socketClient(api, { transports: ["websocket"] });
     socket.emit("startParty", code);
   };
@@ -205,12 +212,9 @@ const Party = ({ player, api, token }) => {
   };
 
   const handleNextLap = () => {
-    console.log("clicked");
     const socket = socketClient(api, { transports: ["websocket"] });
     socket.emit("client-nextLap", party, eliminatedPlayer);
   };
-
-  console.log("player =", player);
 
   return (
     <div className="Party">
@@ -317,6 +321,7 @@ const Party = ({ player, api, token }) => {
           player={player}
           setInput={setInput}
           handlePlay={handlePlay}
+          myWord={myWord}
         />
       ) : (
         //   <>

@@ -17,8 +17,8 @@ import Party from "./containers/Party";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
-// const api = "http://localhost:3001"; // local
-const api = "https://clb-undercover-nodejs.herokuapp.com"; // prod
+const api = "http://localhost:3001"; // local
+// const api = "https://clb-undercover-nodejs.herokuapp.com"; // prod
 
 const App = () => {
   const [token, setToken] = useState(Cookies.get("token") || null);
@@ -27,8 +27,9 @@ const App = () => {
 
   useEffect(() => {
     if (token && reload) {
+      console.log("useEffect");
       (async () => {
-        const response = await axios.get(`${api}/player`, {
+        const response = await axios.get(`${api}/player?reload=true`, {
           headers: {
             authorization: `Bearer ${token}`,
           },
@@ -70,7 +71,12 @@ const App = () => {
             />
           </Route>
           <Route path="/party/:code">
-            <Party player={player} api={api} token={token} />
+            <Party
+              player={player}
+              api={api}
+              token={token}
+              setPlayer={setPlayer}
+            />
           </Route>
           <Route path="/">
             <Home player={player} setReload={setReload} />
