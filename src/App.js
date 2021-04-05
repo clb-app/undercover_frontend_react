@@ -10,12 +10,18 @@ import "./App.css";
 // import des containers
 import Home from "./containers/Home";
 import LaunchParty from "./containers/LaunchParty";
+import Options from "./containers/Options";
 import NewParty from "./containers/NewParty";
 import JoinParty from "./containers/JoinParty";
 import Party from "./containers/Party";
 
 // import des composants
 import Footer from "./components/Footer";
+
+// import des fonts
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+library.add(faArrowLeft);
 
 // const api = "http://localhost:3001"; // local
 const api = "https://clb-undercover-nodejs.herokuapp.com"; // prod
@@ -24,6 +30,8 @@ const App = () => {
   const [token, setToken] = useState(Cookies.get("token") || null);
   const [player, setPlayer] = useState(null);
   const [reload, setReload] = useState(true);
+  const [playersNumber, setPlayersNumber] = useState(4);
+  const [timer, setTimer] = useState(3);
 
   useEffect(() => {
     if (token && reload) {
@@ -49,15 +57,21 @@ const App = () => {
     setToken(t);
   };
 
-  console.log(player);
-
   return (
     <Router>
       <Switch>
         <Route path="/jouer">
           <LaunchParty />
         </Route>
-        <Route path="/new">
+        <Route path="/options">
+          <Options
+            playersNumber={playersNumber}
+            setPlayersNumber={setPlayersNumber}
+            timer={timer}
+            setTimer={setTimer}
+          />
+        </Route>
+        <Route path="/creer">
           <NewParty player={player} api={api} setPlayerToken={setPlayerToken} />
         </Route>
         <Route path="/rejoindre">
@@ -67,7 +81,7 @@ const App = () => {
             setPlayerToken={setPlayerToken}
           />
         </Route>
-        <Route path="/party/:code">
+        <Route path="/partie/:code">
           <Party
             player={player}
             api={api}
