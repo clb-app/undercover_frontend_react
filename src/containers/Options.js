@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Slider from "@material-ui/core/Slider";
 import { useHistory } from "react-router-dom";
 import { Select, MenuItem, FormControl } from "@material-ui/core";
@@ -11,10 +11,15 @@ import Header from "../components/Header";
 import RoleItem from "../components/RoleItem";
 import Button from "../components/Button";
 
-const Options = ({ playersNumber, setPlayersNumber, timer, setTimer }) => {
+const Options = ({
+  playersNumber,
+  setPlayersNumber,
+  timer,
+  setTimer,
+  roles,
+  setRoles,
+}) => {
   const history = useHistory();
-
-  const [roles, setRoles] = useState({});
 
   useEffect(() => {
     switch (playersNumber) {

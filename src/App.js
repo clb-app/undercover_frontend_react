@@ -32,6 +32,7 @@ const App = () => {
   const [reload, setReload] = useState(true);
   const [playersNumber, setPlayersNumber] = useState(4);
   const [timer, setTimer] = useState(3);
+  const [roles, setRoles] = useState({ civils: 3, undercovers: 1, mrwhite: 0 });
 
   useEffect(() => {
     if (token && reload) {
@@ -69,10 +70,19 @@ const App = () => {
             setPlayersNumber={setPlayersNumber}
             timer={timer}
             setTimer={setTimer}
+            roles={roles}
+            setRoles={setRoles}
           />
         </Route>
         <Route path="/creer">
-          <NewParty player={player} api={api} setPlayerToken={setPlayerToken} />
+          <NewParty
+            player={player}
+            api={api}
+            setPlayerToken={setPlayerToken}
+            playersNumber={playersNumber}
+            timer={timer}
+            roles={roles}
+          />
         </Route>
         <Route path="/rejoindre">
           <JoinParty
