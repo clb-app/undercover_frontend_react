@@ -7,12 +7,12 @@ import uid2 from "uid2";
 import "./JoinParty.css";
 
 // import des composants
+import Header from "../components/Header";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import EnterPseudo from "../components/EnterPseudo";
 
 const JoinParty = ({ player, api, setPlayerToken }) => {
-  console.log(player);
   const [code, setCode] = useState("");
   const [isPlayerUnknown, setIsPlayerUnknown] = useState(false);
   const [nickname, setNickname] = useState("");
@@ -31,7 +31,7 @@ const JoinParty = ({ player, api, setPlayerToken }) => {
         });
 
         if (response.status === 200) {
-          history.push(`/party/${code}`);
+          history.push(`/partie/${code}`);
         }
       } catch (err) {
         console.log(err);
@@ -55,7 +55,7 @@ const JoinParty = ({ player, api, setPlayerToken }) => {
 
         if (response.status === 200) {
           setPlayerToken(token, response.data.player);
-          history.push(`/party/${response.data.party.code}`);
+          history.push(`/partie/${response.data.party.code}`);
         }
       } catch (err) {
         console.log(err);
@@ -65,12 +65,15 @@ const JoinParty = ({ player, api, setPlayerToken }) => {
 
   return (
     <div className="JoinParty">
-      <Input
-        label="Entres le code de ta partie"
-        placeholder="Ex: 925921"
-        setInput={setCode}
-      />
-      <Button title="Valider" onClick={handleSubmit} />
+      <Header title="Rejoindre" rightTitle="Undercover" back="/jouer" />
+      <div className="wrapper">
+        <Input
+          label="Entres le code de ta partie"
+          placeholder="Ex: 925921"
+          setInput={setCode}
+        />
+        <Button title="Valider" onClick={handleSubmit} />
+      </div>
       {isPlayerUnknown && (
         <EnterPseudo setInput={setNickname} onClick={handleSubmitWithPseudo} />
       )}
