@@ -82,19 +82,21 @@ const NewParty = ({
   return (
     <div className="NewParty">
       <Header title="Créer" rightTitle="Undercover" back="/jouer" />
-      <div>
-        <h2>Paramètres de votre partie :</h2>
-        <ul>
-          <li>Nombre de joueurs : {playersNumber}</li>
-          <li>
-            Rôles : {roles.civils} enquêteur(s) / {roles.undercovers}{" "}
-            imposteur(s) / {roles.mrwhite} Mr. L
-          </li>
-          <li>Temps de vote : {timer} minutes</li>
-        </ul>
-      </div>
-      <div className="NewParty-button">
-        <Button title="Valider" onClick={handleSubmit} />
+      <div className="wrapper">
+        <div>
+          <h2>Paramètres de votre partie :</h2>
+          <ul>
+            <li>Nombre de joueurs : {playersNumber}</li>
+            <li>
+              Rôles : {roles.civils} enquêteur(s) / {roles.undercovers}{" "}
+              imposteur(s) / {roles.mrwhite} Mr. L
+            </li>
+            <li>Temps de vote : {timer} minutes</li>
+          </ul>
+        </div>
+        <div className="NewParty-button">
+          <Button title="Valider" onClick={handleSubmit} />
+        </div>
       </div>
       {isPlayerUnknown && (
         <EnterPseudo setInput={setNickname} onClick={handleSubmitWithPseudo} />

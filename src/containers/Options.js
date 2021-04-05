@@ -89,42 +89,50 @@ const Options = ({
   return (
     <div className="Options">
       <Header title="Options" rightTitle="Undercover" back="/" />
-      <Slider
-        style={{ width: "500px", margin: "20px", color: "var(--blue)" }}
-        value={playersNumber}
-        valueLabelDisplay="on"
-        min={3}
-        max={20}
-        onChange={(e, value) => setPlayersNumber(value)}
-      />
-      <div className="NewParty-roles-container">
-        <RoleItem value={roles.civils} role="Enquêteur(s)" />
-        <RoleItem value={roles.undercovers} role="Imposteur(s)" />
-        <RoleItem value={roles.mrwhite} role="Mr. L" />
-      </div>
-      <div className="Options-timer-container">
-        <FormControl>
-          <Select
-            labelId="select-minutes"
-            id="select-minutes"
-            value={timer}
-            onChange={(e) => setTimer(e.target.value)}
-          >
-            <MenuItem value={1}>1</MenuItem>
-            <MenuItem value={2}>2</MenuItem>
-            <MenuItem value={3}>3</MenuItem>
-            <MenuItem value={4}>4</MenuItem>
-            <MenuItem value={5}>5</MenuItem>
-          </Select>
-        </FormControl>
-        <div className="Options-timer-text">Temps de vote</div>
-      </div>
-      <div className="NewParty-button">
-        <Button
-          title="Enregistrer"
-          onClick={handleSubmit}
-          bgcColor="var(--blue)"
+      <div className="wrapper">
+        <Slider
+          style={{ width: "300px", margin: "20px", color: "var(--blue)" }}
+          value={playersNumber}
+          valueLabelDisplay="on"
+          min={3}
+          max={20}
+          onChange={(e, value) => setPlayersNumber(value)}
         />
+        <div className="NewParty-roles-container">
+          <RoleItem
+            value={roles.civils}
+            role={`Enquêteur${roles.civils > 1 ? "s" : ""}`}
+          />
+          <RoleItem
+            value={roles.undercovers}
+            role={`Imposteur${roles.undercovers > 1 ? "s" : ""}`}
+          />
+          <RoleItem value={roles.mrwhite} role="Mr. L" />
+        </div>
+        <div className="Options-timer-container">
+          <FormControl>
+            <Select
+              labelId="select-minutes"
+              id="select-minutes"
+              value={timer}
+              onChange={(e) => setTimer(e.target.value)}
+            >
+              <MenuItem value={1}>1</MenuItem>
+              <MenuItem value={2}>2</MenuItem>
+              <MenuItem value={3}>3</MenuItem>
+              <MenuItem value={4}>4</MenuItem>
+              <MenuItem value={5}>5</MenuItem>
+            </Select>
+          </FormControl>
+          <div className="Options-timer-text">Temps de vote</div>
+        </div>
+        <div className="NewParty-button">
+          <Button
+            title="Enregistrer"
+            onClick={handleSubmit}
+            bgcColor="var(--blue)"
+          />
+        </div>
       </div>
     </div>
   );
