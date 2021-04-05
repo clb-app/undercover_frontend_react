@@ -20,18 +20,20 @@ const LaunchParty = () => {
   };
 
   return (
-    <div className="LauchParty">
+    <div className="LaunchParty">
       <Header title="Jouer" rightTitle="Undercover" back="/" />
-      <div className="LaunchParty-buttons-container">
-        <Button title="Créer" onClick={handleNewParty} width="150px" />
-        <Button
-          title="Rejoindre"
-          onClick={handleJoinParty}
-          width="150px"
-          bgcColor="#fff"
-          color="var(--blue)"
-          borderColor="var(--blue)"
-        />
+      <div className="wrapper">
+        <div className="LaunchParty-buttons-container">
+          <Button title="Créer" onClick={handleNewParty} width="150px" />
+          <Button
+            title="Rejoindre"
+            onClick={handleJoinParty}
+            width="150px"
+            bgcColor="#fff"
+            color="var(--blue)"
+            borderColor="var(--blue)"
+          />
+        </div>
       </div>
     </div>
   );

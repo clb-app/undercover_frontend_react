@@ -8,6 +8,7 @@ import { Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 import "./Party.css";
 
 // import des composants
+import Header from "../components/Header";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import PartyInProgress from "../components/PartyInProgress";
@@ -234,6 +235,7 @@ const Party = ({ player, api, token }) => {
 
   return (
     <div className="Party">
+      <Header rightTitle="Undercover" back="/" />
       {isResultDisplayed ? (
         <>
           <div>
