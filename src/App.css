@@ -2,6 +2,10 @@
 
 /* COLORS */
 :root {
+  --blue: #4d9cd6;
+  --dark-blue: #1d5dbe;
+  --grey: #bdbdbd;
+  --light-grey: #e9eaeb;
   --green: #00ffb2;
   --green-dark: #00bf82;
 }

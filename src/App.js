@@ -9,12 +9,12 @@ import "./App.css";
 
 // import des containers
 import Home from "./containers/Home";
+import LaunchParty from "./containers/LaunchParty";
 import NewParty from "./containers/NewParty";
 import JoinParty from "./containers/JoinParty";
 import Party from "./containers/Party";
 
 // import des composants
-import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 // const api = "http://localhost:3001"; // local
@@ -53,36 +53,32 @@ const App = () => {
 
   return (
     <Router>
-      <Header />
-      <div className="wrapper">
-        <Switch>
-          <Route path="/new">
-            <NewParty
-              player={player}
-              api={api}
-              setPlayerToken={setPlayerToken}
-            />
-          </Route>
-          <Route path="/join">
-            <JoinParty
-              player={player}
-              api={api}
-              setPlayerToken={setPlayerToken}
-            />
-          </Route>
-          <Route path="/party/:code">
-            <Party
-              player={player}
-              api={api}
-              token={token}
-              setPlayer={setPlayer}
-            />
-          </Route>
-          <Route path="/">
-            <Home player={player} setReload={setReload} />
-          </Route>
-        </Switch>
-      </div>
+      <Switch>
+        <Route path="/jouer">
+          <LaunchParty />
+        </Route>
+        <Route path="/new">
+          <NewParty player={player} api={api} setPlayerToken={setPlayerToken} />
+        </Route>
+        <Route path="/rejoindre">
+          <JoinParty
+            player={player}
+            api={api}
+            setPlayerToken={setPlayerToken}
+          />
+        </Route>
+        <Route path="/party/:code">
+          <Party
+            player={player}
+            api={api}
+            token={token}
+            setPlayer={setPlayer}
+          />
+        </Route>
+        <Route path="/">
+          <Home player={player} setReload={setReload} />
+        </Route>
+      </Switch>
       {/* <Footer /> */}
     </Router>
   );

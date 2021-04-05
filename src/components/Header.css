@@ -1,6 +1,6 @@
 /* HEADER component */
 .Header {
-  background-color: var(--green);
+  background-color: var(--blue);
   height: 80px;
   /* text-align: center; */
   display: flex;
@@ -9,5 +9,5 @@
   margin-bottom: 50px;
 }
 .Header-title {
-  border-bottom: 10px solid #fff;
+  /* border-bottom: 10px solid #fff; */
 }

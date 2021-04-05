@@ -1,9 +1,9 @@
 button {
   border: none;
-  background-color: var(--green-dark);
   font-size: 20px;
-  padding: 10px;
+  padding: 15px;
   cursor: pointer;
   margin-bottom: 20px;
   color: #fff;
+  border-radius: 10px;
 }

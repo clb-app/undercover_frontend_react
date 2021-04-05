@@ -5,6 +5,7 @@ import { useState } from "react";
 import "./Home.css";
 
 // import des composants
+import Header from "../components/Header";
 import Button from "../components/Button";
 
 const Home = ({ player, setReload }) => {
@@ -18,31 +19,42 @@ const Home = ({ player, setReload }) => {
     setIsAlreadyReloaded(true);
   }
 
-  const handleNewParty = () => {
-    history.push("/new");
+  const handlePlay = () => {
+    history.push("/jouer");
   };
 
-  const handleJoinParty = () => {
-    history.push("/join");
+  const handleOptions = () => {
+    history.push("/options");
+  };
+
+  const handleRules = () => {
+    history.push("/regles");
   };
 
   return (
     <div className="Home">
-      <h2 className="Home-title">
-        Crées ou rejoins une partie et éclates toi avec tes potes sur Undercover
-        !
-      </h2>
-      <div className="Home-buttons-container">
-        <Button
-          title="Tu veux créer une partie? C'est ici!"
-          onClick={handleNewParty}
-          width="400px"
-        />
-        <Button
-          title="Tu veux rejoindre une partie? C'est ici!"
-          onClick={handleJoinParty}
-          width="400px"
-        />
+      <Header title="Undercover" />
+      <div className="wrapper">
+        <div className="Home-buttons-container">
+          <Button
+            title="Jouer"
+            onClick={handlePlay}
+            bgcColor="var(--blue)"
+            width="150px"
+          />
+          <Button
+            title="Options"
+            onClick={handleOptions}
+            bgcColor="var(--dark-blue)"
+            width="150px"
+          />
+          <Button
+            title="Règles"
+            onClick={handleRules}
+            bgcColor="var(--grey)"
+            width="150px"
+          />
+        </div>
       </div>
     </div>
   );
