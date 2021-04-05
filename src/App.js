@@ -10,6 +10,7 @@ import "./App.css";
 // import des containers
 import Home from "./containers/Home";
 import LaunchParty from "./containers/LaunchParty";
+import Options from "./containers/Options";
 import NewParty from "./containers/NewParty";
 import JoinParty from "./containers/JoinParty";
 import Party from "./containers/Party";
@@ -24,6 +25,7 @@ const App = () => {
   const [token, setToken] = useState(Cookies.get("token") || null);
   const [player, setPlayer] = useState(null);
   const [reload, setReload] = useState(true);
+  const [playersNumber, setPlayersNumber] = useState(4);
 
   useEffect(() => {
     if (token && reload) {
@@ -49,13 +51,17 @@ const App = () => {
     setToken(t);
   };
 
-  console.log(player);
-
   return (
     <Router>
       <Switch>
         <Route path="/jouer">
           <LaunchParty />
+        </Route>
+        <Route path="/options">
+          <Options
+            playersNumber={playersNumber}
+            setPlayersNumber={setPlayersNumber}
+          />
         </Route>
         <Route path="/new">
           <NewParty player={player} api={api} setPlayerToken={setPlayerToken} />
