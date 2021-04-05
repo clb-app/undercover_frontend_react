@@ -8,6 +8,15 @@
   justify-content: center;
   margin-bottom: 50px;
 }
+.Header-back {
+  position: absolute;
+  left: 15px;
+}
 .Header-title {
   /* border-bottom: 10px solid #fff; */
+}
+.Header-rightTitle {
+  position: absolute;
+  right: 15px;
+  font-size: 20px;
 }

@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Slider from "@material-ui/core/Slider";
 import { useHistory } from "react-router-dom";
+import { Select, MenuItem, FormControl } from "@material-ui/core";
 
 // import CSS
 import "./Options.css";
 
 // import des composants
 import Header from "../components/Header";
+import RoleItem from "../components/RoleItem";
 import Button from "../components/Button";
 
-const Options = ({ playersNumber, setPlayersNumber }) => {
+const Options = ({ playersNumber, setPlayersNumber, timer, setTimer }) => {
   const history = useHistory();
 
   const [roles, setRoles] = useState({});
@@ -75,13 +77,13 @@ const Options = ({ playersNumber, setPlayersNumber }) => {
     }
   }, [playersNumber]);
 
-  const handleValidate = () => {
+  const handleSubmit = () => {
     history.push("/");
   };
 
   return (
     <div className="Options">
-      <Header title="Options" />
+      <Header title="Options" rightTitle="Undercover" back="/" />
       <Slider
         style={{ width: "500px", margin: "20px", color: "var(--blue)" }}
         value={playersNumber}
@@ -91,12 +93,33 @@ const Options = ({ playersNumber, setPlayersNumber }) => {
         onChange={(e, value) => setPlayersNumber(value)}
       />
       <div className="NewParty-roles-container">
-        <p>Civils : {roles.civils}</p>
-        <p>Undercovers : {roles.undercovers}</p>
-        <p>Mr White : {roles.mrwhite}</p>
+        <RoleItem value={roles.civils} role="Enquêteur(s)" />
+        <RoleItem value={roles.undercovers} role="Imposteur(s)" />
+        <RoleItem value={roles.mrwhite} role="Mr. L" />
+      </div>
+      <div className="Options-timer-container">
+        <FormControl>
+          <Select
+            labelId="select-minutes"
+            id="select-minutes"
+            value={timer}
+            onChange={(e) => setTimer(e.target.value)}
+          >
+            <MenuItem value={1}>1</MenuItem>
+            <MenuItem value={2}>2</MenuItem>
+            <MenuItem value={3}>3</MenuItem>
+            <MenuItem value={4}>4</MenuItem>
+            <MenuItem value={5}>5</MenuItem>
+          </Select>
+        </FormControl>
+        <div className="Options-timer-text">Temps de vote</div>
       </div>
       <div className="NewParty-button">
-        <Button title="Valider" onClick={handleValidate} />
+        <Button
+          title="Enregistrer"
+          onClick={handleSubmit}
+          bgcColor="var(--blue)"
+        />
       </div>
     </div>
   );

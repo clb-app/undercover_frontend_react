@@ -12,18 +12,27 @@ const LaunchParty = () => {
   const history = useHistory();
 
   const handleNewParty = () => {
-    history.push("/new");
+    history.push("/creer");
   };
 
   const handleJoinParty = () => {
-    history.push("/join");
+    history.push("/rejoindre");
   };
 
   return (
     <div className="LauchParty">
-      <Header title="Jouer" rightTitle="Undercover" />
-      <Button title="Créer" onClick={handleNewParty} width="400px" />
-      <Button title="Rejoindre" onClick={handleJoinParty} width="400px" />
+      <Header title="Jouer" rightTitle="Undercover" back="/" />
+      <div className="LaunchParty-buttons-container">
+        <Button title="Créer" onClick={handleNewParty} width="150px" />
+        <Button
+          title="Rejoindre"
+          onClick={handleJoinParty}
+          width="150px"
+          bgcColor="#fff"
+          color="var(--blue)"
+          borderColor="var(--blue)"
+        />
+      </div>
     </div>
   );
 };

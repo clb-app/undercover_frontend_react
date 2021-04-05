@@ -1,0 +1,7 @@
+.Options-timer-container {
+  display: flex;
+  align-items: center;
+}
+.Options-timer-text {
+  margin-left: 10px;
+}

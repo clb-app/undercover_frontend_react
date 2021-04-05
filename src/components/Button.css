@@ -4,6 +4,8 @@ button {
   padding: 15px;
   cursor: pointer;
   margin-bottom: 20px;
-  color: #fff;
   border-radius: 10px;
+  /* border-width: 2px;
+  border-style: solid; */
+  border: solid 1px #fff;
 }
