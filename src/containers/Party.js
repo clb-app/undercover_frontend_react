@@ -67,6 +67,8 @@ const Party = ({ player, api, token }) => {
         setIsResultDisplayed(false);
         setEliminatedPlayer({});
         setIsTimerActive(false);
+        setIsMrWhiteSubmitted(false);
+        setMrWhiteWord("");
         setMinutes(1);
         setSeconds(0);
         setNext(null);
@@ -117,6 +119,13 @@ const Party = ({ player, api, token }) => {
       setIsTimerActive(true);
       setMinutes(mins - 1);
       setSeconds(59);
+    });
+
+    socket.on("server-mrWhiteWord", (checkWord, word) => {
+      let result = checkWord ? "WHITE_WINS" : "WHITE_OVER";
+      setNext(result);
+      setMrWhiteWord(word);
+      setIsMrWhiteSubmitted(true);
     });
   }, []);
 
@@ -226,6 +235,8 @@ const Party = ({ player, api, token }) => {
   const handleMrWhiteWord = () => {
     // socket emit client to server
     // io emit server to client
+    const socket = socketClient(api, { transports: ["websocket"] });
+    socket.emit("client-mrWhiteWord", party, mrWhiteWord);
   };
 
   const handleNextLap = () => {
@@ -236,11 +247,30 @@ const Party = ({ player, api, token }) => {
   return (
     <div className="Party">
       <Header rightTitle="Undercover" back="/" />
-      {isResultDisplayed ? (
-        <>
+      {isMrWhiteSubmitted ? (
+        next === "WHITE_WINS" ? (
+          <div>
+            {eliminatedPlayer.nickname} (Mr L) a découvert le mot des civils! Il
+            s'agissait de {mrWhiteWord}. Défaite des civils!
+          </div>
+        ) : (
+          <>
+            <div>
+              {eliminatedPlayer.nickname} (Mr L) s'est trompé sur le mot des
+              civils, voici le mot qu'il pensait être le bon : {mrWhiteWord}
+            </div>
+            {player._id === party.moderator_id && (
+              <Button title="Next" onClick={handleNextLap} />
+            )}
+          </>
+        )
+      ) : isResultDisplayed ? (
+        <div>
           <div>
             {eliminatedPlayer.nickname} a été éliminé, il s'agissait d'un{" "}
-            {eliminatedPlayer.role}
+            {eliminatedPlayer.role === "mrwhite"
+              ? "Mr L"
+              : eliminatedPlayer.role}
             <div>
               <h4>
                 Personnes ayant votés contre {eliminatedPlayer.nickname} :
@@ -277,7 +307,7 @@ const Party = ({ player, api, token }) => {
             </div>
           )}
           {/* {isMrWhiteSubmitted && <div>Le mot ta</div>} */}
-        </>
+        </div>
       ) : isLapOver ? (
         <div>
           <h2>Votes :</h2>

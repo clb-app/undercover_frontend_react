@@ -1,17 +1,27 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 // import CSS
 import "./Header.css";
 
 const Header = ({ title, rightTitle, back }) => {
+  const history = useHistory();
+
+  const handleClick = () => {
+    if (back === "/") {
+      history.push({ pathname: "/", state: "reload" });
+    } else {
+      history.push(back);
+    }
+  };
+
   return (
     <header className="Header">
       {back && (
-        <Link className="Header-back" to={back}>
+        <div className="Header-back" to={back} onClick={handleClick}>
           <FontAwesomeIcon icon="arrow-left" size="2x" color="#000" />
-        </Link>
+        </div>
       )}
       <h1 className="Header-title">{title}</h1>
       <h2 className="Header-rightTitle">{rightTitle}</h2>
