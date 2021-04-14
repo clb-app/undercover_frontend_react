@@ -224,8 +224,22 @@ const Party = ({ player, api, token }) => {
 
       if (response.status === 200) {
         setEliminatedPlayer(response.data.eliminatedPlayer);
+        setPlayerVoteAgainst(null);
         setNext(response.data.next);
         setIsResultDisplayed(true);
+        if (response.data.next === "EQUAL") {
+          setTimeout(async () => {
+            try {
+              await axios.get(`${api}/player/reload-votes`, {
+                headers: {
+                  authorization: `Bearer ${token}`,
+                },
+              });
+            } catch (err) {
+              console.log(err);
+            }
+          }, 15000);
+        }
       }
     } catch (err) {
       console.log(err);
@@ -241,8 +255,10 @@ const Party = ({ player, api, token }) => {
 
   const handleNextLap = () => {
     const socket = socketClient(api, { transports: ["websocket"] });
-    socket.emit("client-nextLap", party, eliminatedPlayer);
+    socket.emit("client-nextLap", party, eliminatedPlayer[0]);
   };
+
+  console.log("eliminatedPlayer =", eliminatedPlayer);
 
   return (
     <div className="Party">
@@ -266,22 +282,29 @@ const Party = ({ player, api, token }) => {
         )
       ) : isResultDisplayed ? (
         <div>
-          <div>
-            {eliminatedPlayer.nickname} a été éliminé, il s'agissait d'un{" "}
-            {eliminatedPlayer.role === "mrwhite"
-              ? "Mr L"
-              : eliminatedPlayer.role}
+          {eliminatedPlayer.length === 1 ? (
             <div>
-              <h4>
-                Personnes ayant votés contre {eliminatedPlayer.nickname} :
-              </h4>
-              {eliminatedPlayer.votes.map((item) => {
-                return <p key={item._id}>{item.nickname}</p>;
-              })}
+              {eliminatedPlayer[0].nickname} a été éliminé, il s'agissait d'un{" "}
+              {eliminatedPlayer[0].role === "mrwhite"
+                ? "Mr L"
+                : eliminatedPlayer[0].role}
+              <div>
+                <h4>
+                  Personnes ayant votés contre {eliminatedPlayer[0].nickname} :
+                </h4>
+                {eliminatedPlayer[0].votes.map((item) => {
+                  return <p key={item._id}>{item.nickname}</p>;
+                })}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div>
+              Les joueurs suivant sont à égalité au niveau des votes, il faut
+              faire un choix :
+            </div>
+          )}
           {next === "WHITE" ? (
-            player._id === eliminatedPlayer._id && (
+            player._id === eliminatedPlayer[0]._id && (
               <div>
                 <h2>
                   Tu as été découvert, tentes ta chance et essayes de découvrir
@@ -300,6 +323,38 @@ const Party = ({ player, api, token }) => {
             player._id === party.moderator_id && (
               <Button title="Next" onClick={handleNextLap} />
             )
+          ) : next === "EQUAL" ? (
+            <>
+              {eliminatedPlayer.map((player) => {
+                console.log(player.nickname);
+                return (
+                  <div
+                    key={player._id}
+                    onClick={() => handleVoteAgainst(player._id)}
+                    style={
+                      playerVoteAgainst
+                        ? playerVoteAgainst._id === player._id
+                          ? {
+                              background: "red",
+                            }
+                          : { background: "#fff" }
+                        : { background: "#fff" }
+                    }
+                  >
+                    {player.nickname}
+                  </div>
+                );
+              })}
+              <Timer
+                isTimerActive={isTimerActive}
+                minutes={minutes}
+                seconds={seconds}
+                party={party}
+                player={player}
+                setMinutes={setMinutes}
+                handleCountDown={handleCountDown}
+              />
+            </>
           ) : (
             <div>
               <h2>Victoire des civils! On rejoue ?</h2>
