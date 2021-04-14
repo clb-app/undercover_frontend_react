@@ -3,6 +3,7 @@ import { useParams, useHistory } from "react-router-dom";
 import socketClient from "socket.io-client";
 import axios from "axios";
 import { Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // import CSS
 import "./Party.css";
@@ -472,39 +473,52 @@ const Party = ({ player, api, token }) => {
         //   )}
         // </>
         <>
-          <div>
+          {/* <div>
             <Button title="Retour" onClick={goBackHome} />
-          </div>
+          </div> */}
 
           {isLoading ? (
             <div>Chargement</div>
           ) : (
-            <>
+            <div className="wrapper">
+              <div>
+                {party.players.length} / {playersNumber} joueurs
+                {party.players.length === playersNumber && (
+                  <span>. L'hôte peut désormais démarrer la partie</span>
+                )}
+              </div>
+              <div className="Party-lobby-players-container">
+                {party.players.map((player) => {
+                  return (
+                    <div key={player._id} className="Party-lobby-player">
+                      <div>{player.nickname}</div>
+                      {party.moderator_id === player._id && (
+                        <div>
+                          <FontAwesomeIcon icon="star" color="#F1B33B" />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
               <div className="Party-code-container">
-                <div>Code de la partie : {party.code}</div>
+                <div>Code partie : {party.code}</div>
               </div>
-              <div className="Party-playersList-container">
-                <h2>Liste des joueurs :</h2>
-                <div>
-                  {party.players.length} / {playersNumber} joueurs
-                </div>
-              </div>
-
-              {party.players.map((player) => {
-                return <div key={player._id}>{player.nickname}</div>;
-              })}
-              {party.players.length === playersNumber && player ? (
-                // player &&
-                party.moderator_id === player._id && (
-                  <Button
-                    title="Démarrer la partie"
-                    onClick={handleStartParty}
-                  />
-                )
-              ) : (
-                <div>En attente d'autres joueurs ...</div>
-              )}
-            </>
+              {player &&
+                (party.moderator_id === player._id ? (
+                  party.players.length === playersNumber ? (
+                    <Button title="Démarrer" onClick={handleStartParty} />
+                  ) : (
+                    <Button
+                      title="Démarrer"
+                      onClick={() => {}}
+                      bgcColor="#D8D8D8"
+                    />
+                  )
+                ) : (
+                  <div></div>
+                ))}
+            </div>
           )}
         </>
       )}
