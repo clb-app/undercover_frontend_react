@@ -20,8 +20,8 @@ import Footer from "./components/Footer";
 
 // import des fonts
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-library.add(faArrowLeft);
+import { faArrowLeft, faStar } from "@fortawesome/free-solid-svg-icons";
+library.add(faArrowLeft, faStar);
 
 // const api = "http://localhost:3001"; // local
 const api = "https://clb-undercover-nodejs.herokuapp.com"; // prod

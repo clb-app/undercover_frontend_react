@@ -1,6 +1,19 @@
-.Party-code-container {
+.Party-lobby-players-container {
+  background-color: #e9eaeb;
+  width: 300px;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.Party-lobby-player {
+  background-color: #edeeef;
+  margin: 10px;
+  padding: 20px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+}
+.Party-code-container {
+  margin-bottom: 20px;
 }
 .Party-playersList-container {
   display: flex;
