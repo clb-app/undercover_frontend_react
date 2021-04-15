@@ -72,6 +72,8 @@ const PartyInProgress = ({
                     <Button title="Valider" onClick={handlePlay} />
                   </div>
                 </div>
+              ) : playerPlaying === "last" ? (
+                <></>
               ) : (
                 <div>
                   <span className="PartyInProgress-playerPlayingNickname">
@@ -82,6 +84,14 @@ const PartyInProgress = ({
               )
             ) : (
               <div className="PartyInProgress-lapOver-container">
+                {/* {previousPlay && previousPlay.nickname && (
+                  <div className="PartyInProgress_lastWord_container">
+                    <div>Dernier mot joué par {previousPlay.nickname} :</div>
+                    <div className="PartyInProgress-lastWord-text">
+                      {previousPlay.value}
+                    </div>
+                  </div>
+                )} */}
                 <div>Le tour est terminé.</div>
                 <div>Place aux votes !</div>
               </div>

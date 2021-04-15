@@ -97,10 +97,11 @@ const Party = ({ player, api, token, timer }) => {
               value: previousValue,
               nickname: previousPlayerNickname,
             });
-            setPlayerPlaying(null);
+
+            setPlayerPlaying("last");
             setTimeout(() => {
               socket.emit("client-lapOver", party);
-            }, 5000);
+            }, 30000);
           }
         }
 
@@ -110,7 +111,13 @@ const Party = ({ player, api, token, timer }) => {
 
     socket.on("server-lapOver", (party) => {
       setParty(party);
-      setIsLapOver(true);
+      setTimeout(() => {
+        setPlayerPlaying(null);
+        setTimeout(() => {
+          setIsLapOver(true);
+        }, 5000);
+      }, 10000);
+      // setIsLapOver(true);
       // setTimeout(() => {
       //   socket.emit("client-closeVotes", playerVoteAgainst);
       // }, 30000);
