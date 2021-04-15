@@ -229,6 +229,8 @@ const Party = ({ player, api, token }) => {
         setNext(response.data.next);
         setIsResultDisplayed(true);
         if (response.data.next === "EQUAL") {
+          setMinutes(1);
+          setSeconds(0);
           setTimeout(async () => {
             try {
               await axios.get(`${api}/player/reload-votes`, {
