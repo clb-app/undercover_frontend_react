@@ -20,3 +20,31 @@
   align-items: center;
   justify-content: space-between;
 }
+
+.Party-isLapOver-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.Party-isLapOver-img-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 20px;
+}
+.Party-isLapOver-img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.Party-isLapOver-playersList-container {
+  background-color: #fff;
+  width: 300px;
+  margin-top: 10px;
+}
+.Party-isLapOver-player {
+  padding: 20px;
+  margin: 5px;
+}

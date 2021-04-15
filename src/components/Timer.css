@@ -1,4 +1,14 @@
 .Timer {
   display: flex;
   justify-content: center;
+  color: red;
+  background-color: #edeeef;
+  font-size: 30px;
+  padding: 10px;
+}
+.Timer-container {
+  display: flex;
+}
+.Timer-btn-container {
+  margin-left: 10px;
 }
