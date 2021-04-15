@@ -8,9 +8,90 @@
   flex-direction: column;
   align-items: center;
 }
-.PartyInProgress_lastWord_text {
-  margin-bottom: 20px;
+.PartyInProgress_lastWord_container {
+  margin-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .PartyInProgress_errorInput_text {
   color: red;
+  margin-top: 5px;
+}
+.PartyInProgress {
+  display: flex;
+  width: 100%;
+}
+.PartyInProgress > div {
+  flex: 1;
+}
+.PartyInProgress-players-container {
+  background-color: #edeeef;
+  width: 300px;
+  border-radius: 10px;
+}
+.PartyInProgress-player {
+  /* margin: 10px; */
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.PartyInProgress-player-eliminated {
+  opacity: 0.25;
+}
+
+.PartyInProgress-middle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+.PartyInProgress-lastWord-text {
+  font-size: 40px;
+}
+.PartyInProgress-playerPlaying-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.PartyInProgress-btn {
+  margin-top: 20px;
+}
+.PartyInProgress-playerPlayingNickname {
+  font-weight: 800;
+}
+.PartyInProgress-myWord-container {
+  margin-top: 100px;
+}
+.PartyInProgress-myWord-text {
+  text-align: center;
+  background-color: #eae9eb;
+  padding: 5px;
+  margin-top: 5px;
+}
+.PartyInProgress-right-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.PartyInProgress-right-container > h2 {
+  font-size: 20px;
+  font-weight: 700;
+}
+.PartyInProgress-lapOver-container {
+  position: absolute;
+  top: 80px;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99;
+  background-color: #276fa4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
 }

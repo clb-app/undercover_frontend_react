@@ -5,11 +5,19 @@
 }
 .Input-label {
   font-size: 18px;
+  font-weight: 700;
+  text-align: center;
 }
 .Input-input {
   border: none;
-  border-bottom: 1px solid var(--green);
+  /* border-bottom: 1px solid var(--green);
+ */
+  background-color: #e9eaeb;
   text-align: center;
   margin-top: 20px;
+  width: 200px;
+  height: 40px;
+  border-radius: 10px;
   font-style: italic;
+  font-size: 16px;
 }
