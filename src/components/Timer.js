@@ -16,9 +16,7 @@ const Timer = ({
 }) => {
   return isTimerActive ? (
     <div className="Timer">
-      <h2>
-        {minutes} : {seconds < 10 ? `0${seconds}` : seconds}
-      </h2>
+      {minutes} : {seconds < 10 ? `0${seconds}` : seconds}
     </div>
   ) : (
     party.moderator_id === player._id && (

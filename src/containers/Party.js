@@ -16,6 +16,7 @@ import PartyInProgress from "../components/PartyInProgress";
 import Timer from "../components/Timer.js";
 
 import rocketsImg from "../assets/images/torpedo_2.jpg";
+import civilImg from "../assets/images/emojione_person-shrugging.png";
 
 const Party = ({ player, api, token, timer }) => {
   const { code } = useParams();
@@ -293,27 +294,63 @@ const Party = ({ player, api, token, timer }) => {
           </>
         )
       ) : isResultDisplayed ? (
-        <div>
+        <div className="Party-results-container">
           {eliminatedPlayer.length === 1 ? (
-            <div>
-              {eliminatedPlayer[0].nickname} a été éliminé, il s'agissait d'un{" "}
-              {eliminatedPlayer[0].role === "mrwhite"
-                ? "Mr L"
-                : eliminatedPlayer[0].role}
-              <div>
-                <h4>
-                  Personnes ayant votés contre {eliminatedPlayer[0].nickname} :
-                </h4>
-                {eliminatedPlayer[0].votes.map((item) => {
-                  return <p key={item._id}>{item.nickname}</p>;
-                })}
+            <>
+              <div className="Party-results-eliminatedPlayer-container">
+                <div>
+                  <span style={{ fontWeight: "700" }}>
+                    {eliminatedPlayer[0].nickname}
+                  </span>{" "}
+                  a été éliminé
+                </div>
+                <img
+                  src={civilImg}
+                  alt="civil"
+                  className="Party-isLapOver-img"
+                />
+                <div>
+                  Il était{" "}
+                  <span style={{ fontWeight: "700" }}>
+                    {eliminatedPlayer[0].role === "mrwhite"
+                      ? "Mr L"
+                      : eliminatedPlayer[0].role.toUpperCase()}
+                  </span>
+                </div>
               </div>
-            </div>
+              <div className="Party-results-playersList-container">
+                <div style={{ textAlign: "center" }}>
+                  Personnes ayant voté contre {eliminatedPlayer[0].nickname} :
+                </div>
+                <div className="Party-results-playersList">
+                  {eliminatedPlayer[0].votes.map((item) => {
+                    return (
+                      <div key={item._id} className="Party-results-player">
+                        {item.nickname}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </>
           ) : (
-            <div>
-              Les joueurs suivant sont à égalité au niveau des votes, il faut
-              faire un choix :
-            </div>
+            <>
+              <div style={{ marginBottom: "10px" }}>
+                <Timer
+                  isTimerActive={isTimerActive}
+                  minutes={minutes}
+                  seconds={seconds}
+                  party={party}
+                  player={player}
+                  setMinutes={setMinutes}
+                  handleCountDown={handleCountDown}
+                />
+              </div>
+              <div>
+                Les joueurs suivant sont à égalité au niveau des votes, il faut
+                faire un choix :
+              </div>
+            </>
           )}
           {next === "WHITE" ? (
             player._id === eliminatedPlayer[0]._id && (
@@ -327,48 +364,55 @@ const Party = ({ player, api, token, timer }) => {
               </div>
             )
           ) : next === "OVER" ? (
-            <div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginTop: "20px",
+              }}
+            >
               <h2>Victoire des undercovers! On rejoue ?</h2>
               <Button title="Rejouer" onClick={goBackHome} />
             </div>
           ) : next === "NEXT" ? (
             player._id === party.moderator_id && (
-              <Button title="Next" onClick={handleNextLap} />
+              <Button title="Prochain tour" onClick={handleNextLap} />
             )
           ) : next === "EQUAL" ? (
-            <>
+            <div className="Party-isLapOver-playersList-container">
               {eliminatedPlayer.map((player) => {
                 console.log(player.nickname);
                 return (
                   <div
                     key={player._id}
                     onClick={() => handleVoteAgainst(player._id)}
+                    className="Party-isLapOver-player"
                     style={
                       playerVoteAgainst
                         ? playerVoteAgainst._id === player._id
                           ? {
                               background: "red",
+                              color: "#fff",
                             }
-                          : { background: "#fff" }
-                        : { background: "#fff" }
+                          : { background: "#EDEEEF" }
+                        : { background: "#EDEEEF" }
                     }
                   >
                     {player.nickname}
                   </div>
                 );
               })}
-              <Timer
-                isTimerActive={isTimerActive}
-                minutes={minutes}
-                seconds={seconds}
-                party={party}
-                player={player}
-                setMinutes={setMinutes}
-                handleCountDown={handleCountDown}
-              />
-            </>
+            </div>
           ) : (
-            <div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginTop: "20px",
+              }}
+            >
               <h2>Victoire des civils! On rejoue ?</h2>
               <Button title="Rejouer" onClick={goBackHome} />
             </div>

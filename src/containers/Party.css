@@ -48,3 +48,30 @@
   padding: 20px;
   margin: 5px;
 }
+
+.Party-results-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.Party-results-eliminatedPlayer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.Party-results-eliminatedPlayer {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 30px;
+  font-weight: 300;
+}
+.Party-results-playersList-container {
+  background-color: #fff;
+  width: 300px;
+  margin-top: 10px;
+}
+.Party-results-player {
+  padding: 20px;
+  margin: 5px;
+  background-color: #edeeef;
+}
