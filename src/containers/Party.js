@@ -15,6 +15,8 @@ import Input from "../components/Input";
 import PartyInProgress from "../components/PartyInProgress";
 import Timer from "../components/Timer.js";
 
+import rocketsImg from "../assets/images/torpedo_2.jpg";
+
 const Party = ({ player, api, token, timer }) => {
   const { code } = useParams();
   const history = useHistory();
@@ -374,8 +376,8 @@ const Party = ({ player, api, token, timer }) => {
           {/* {isMrWhiteSubmitted && <div>Le mot ta</div>} */}
         </div>
       ) : isLapOver ? (
-        <div>
-          <h2>Votes :</h2>
+        <div className="Party-isLapOver-container">
+          {/* <h2>Votes :</h2>
           {party.players.map((player) => {
             return (
               <div
@@ -394,7 +396,8 @@ const Party = ({ player, api, token, timer }) => {
                 {player.nickname}
               </div>
             );
-          })}
+          })} */}
+
           {
             <Timer
               isTimerActive={isTimerActive}
@@ -406,6 +409,42 @@ const Party = ({ player, api, token, timer }) => {
               handleCountDown={handleCountDown}
             />
           }
+          <div className="Party-isLapOver-img-container">
+            <img
+              src={rocketsImg}
+              alt="fusées"
+              className="Party-isLapOver-img"
+            />
+            <div>C'est l'heure de faire sauter quelqu'un !</div>
+            <div>Qui n'a pas sa place?</div>
+          </div>
+          <div className="Party-isLapOver-playersList-container">
+            {party.players.map((player) => {
+              if (player.alive) {
+                return (
+                  <div
+                    key={player._id}
+                    onClick={() => handleVoteAgainst(player._id)}
+                    className="Party-isLapOver-player"
+                    style={
+                      playerVoteAgainst
+                        ? playerVoteAgainst._id === player._id
+                          ? {
+                              background: "red",
+                              color: "#fff",
+                            }
+                          : { background: "#EDEEEF" }
+                        : { background: "#EDEEEF" }
+                    }
+                  >
+                    {player.nickname}
+                  </div>
+                );
+              } else {
+                return <div key={player._id}></div>;
+              }
+            })}
+          </div>
         </div>
       ) : isPartyStarted ? (
         <PartyInProgress
