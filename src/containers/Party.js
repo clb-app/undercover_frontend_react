@@ -101,7 +101,7 @@ const Party = ({ player, api, token, timer }) => {
             setPlayerPlaying("last");
             setTimeout(() => {
               socket.emit("client-lapOver", party);
-            }, 30000);
+            }, 5000);
           }
         }
 
