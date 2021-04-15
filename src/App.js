@@ -97,6 +97,7 @@ const App = () => {
             api={api}
             token={token}
             setPlayer={setPlayer}
+            timer={timer}
           />
         </Route>
         <Route path="/">

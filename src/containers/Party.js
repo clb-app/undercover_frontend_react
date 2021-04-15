@@ -15,7 +15,7 @@ import Input from "../components/Input";
 import PartyInProgress from "../components/PartyInProgress";
 import Timer from "../components/Timer.js";
 
-const Party = ({ player, api, token }) => {
+const Party = ({ player, api, token, timer }) => {
   const { code } = useParams();
   const history = useHistory();
 
@@ -29,7 +29,7 @@ const Party = ({ player, api, token }) => {
   const [previousPlay, setPreviousPlay] = useState(null);
   const [isLapOver, setIsLapOver] = useState(false);
   const [playerVoteAgainst, setPlayerVoteAgainst] = useState(null);
-  const [minutes, setMinutes] = useState(1);
+  const [minutes, setMinutes] = useState(timer);
   const [seconds, setSeconds] = useState(0);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [isResultDisplayed, setIsResultDisplayed] = useState(false);
@@ -70,7 +70,7 @@ const Party = ({ player, api, token }) => {
         setIsTimerActive(false);
         setIsMrWhiteSubmitted(false);
         setMrWhiteWord("");
-        setMinutes(1);
+        setMinutes(timer);
         setSeconds(0);
         setNext(null);
 
@@ -229,7 +229,7 @@ const Party = ({ player, api, token }) => {
         setNext(response.data.next);
         setIsResultDisplayed(true);
         if (response.data.next === "EQUAL") {
-          setMinutes(1);
+          setMinutes(timer);
           setSeconds(0);
           setTimeout(async () => {
             try {
