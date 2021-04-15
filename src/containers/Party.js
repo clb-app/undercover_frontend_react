@@ -98,9 +98,9 @@ const Party = ({ player, api, token }) => {
               nickname: previousPlayerNickname,
             });
             setPlayerPlaying(null);
-            // setTimeout(() => {
-            //   socket.emit("client-lapOver", party);
-            // }, 3000);
+            setTimeout(() => {
+              socket.emit("client-lapOver", party);
+            }, 5000);
           }
         }
 
