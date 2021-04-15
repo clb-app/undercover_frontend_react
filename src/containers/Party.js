@@ -98,9 +98,9 @@ const Party = ({ player, api, token }) => {
               nickname: previousPlayerNickname,
             });
             setPlayerPlaying(null);
-            setTimeout(() => {
-              socket.emit("client-lapOver", party);
-            }, 3000);
+            // setTimeout(() => {
+            //   socket.emit("client-lapOver", party);
+            // }, 3000);
           }
         }
 
@@ -397,32 +397,6 @@ const Party = ({ player, api, token }) => {
               handleCountDown={handleCountDown}
             />
           }
-          {/* {isTimerActive ? (
-            <div>
-              {minutes} : {seconds < 10 ? `0${seconds}` : seconds}
-            </div>
-          ) : (
-            party.moderator_id === player._id && (
-              <>
-                <FormControl>
-                  <InputLabel id="select-minutes">Minutes</InputLabel>
-                  <Select
-                    labelId="select-minutes"
-                    id="select-minutes"
-                    value={minutes}
-                    onChange={(e) => setMinutes(e.target.value)}
-                  >
-                    <MenuItem value={1}>1</MenuItem>
-                    <MenuItem value={2}>2</MenuItem>
-                    <MenuItem value={3}>3</MenuItem>
-                    <MenuItem value={4}>4</MenuItem>
-                    <MenuItem value={5}>5</MenuItem>
-                  </Select>
-                </FormControl>
-                <Button title="Démarrer le timer" onClick={handleCountDown} />
-              </>
-            )
-          )} */}
         </div>
       ) : isPartyStarted ? (
         <PartyInProgress
@@ -437,46 +411,7 @@ const Party = ({ player, api, token }) => {
           errorInput={errorInput}
         />
       ) : (
-        //   <>
-        //   <h2>Liste des joueurs :</h2>
-        //   {party.players.map((player) => {
-        //     return <div key={player._id}>{player.nickname}</div>;
-        //   })}
-        //   <h2>Mes mots déjà joués :</h2>
-        //   {words.map((word, index) => {
-        //     return <p key={index}>{word}</p>;
-        //   })}
-        //   {previousPlay && previousPlay.nickname && (
-        //     <div>
-        //       Dernier mot joué par {previousPlay.nickname} est{" "}
-        //       {previousPlay.value}
-        //     </div>
-        //   )}
-        //   {playerPlaying ? (
-        //     playerPlaying._id === player._id ? (
-        //       <>
-        //         <Input
-        //           label="Mot"
-        //           placeholder="Ex: chien"
-        //           setInput={setInput}
-        //         />
-        //         <Button title="Jouer" onClick={handlePlay} />
-        //       </>
-        //     ) : (
-        //       <div>{playerPlaying.nickname} est en train de jouer ...</div>
-        //     )
-        //   ) : (
-        //     <div>
-        //       Tu as retenu les mots de chacun ? Les votes ont lieu dans quelques
-        //       secondes ...
-        //     </div>
-        //   )}
-        // </>
         <>
-          {/* <div>
-            <Button title="Retour" onClick={goBackHome} />
-          </div> */}
-
           {isLoading ? (
             <div>Chargement</div>
           ) : (
