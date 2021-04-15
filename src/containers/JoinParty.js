@@ -68,11 +68,13 @@ const JoinParty = ({ player, api, setPlayerToken }) => {
       <Header title="Rejoindre" rightTitle="Undercover" back="/jouer" />
       <div className="wrapper">
         <Input
-          label="Entres le code de ta partie"
+          label="Entre le code de ta partie"
           placeholder="Ex: 925921"
           setInput={setCode}
         />
-        <Button title="Valider" onClick={handleSubmit} />
+        <div className="JoinParty-btn-container">
+          <Button title="Valider" onClick={handleSubmit} />
+        </div>
       </div>
       {isPlayerUnknown && (
         <EnterPseudo setInput={setNickname} onClick={handleSubmitWithPseudo} />
