@@ -79,6 +79,7 @@ const NewParty = ({
     }
   };
 
+  console.log(roles);
   return (
     <div className="NewParty">
       <Header title="Créer" rightTitle="Undercover" back="/jouer" />
@@ -86,12 +87,28 @@ const NewParty = ({
         <div>
           <h2>Paramètres de votre partie :</h2>
           <ul>
-            <li>Nombre de joueurs : {playersNumber}</li>
-            <li>
-              Rôles : {roles.civils} enquêteur(s) / {roles.undercovers}{" "}
-              imposteur(s) / {roles.mrwhite} Mr. L
+            <li className="NewParty-marginTop">
+              Nombre de joueurs :{" "}
+              <span className="NewParty-bold">{playersNumber}</span>
             </li>
-            <li>Temps de vote : {timer} minutes</li>
+            <div className="NewParty-marginTop">
+              <li>
+                <span className="NewParty-bold">{roles.civils}</span> enquêteur
+                {roles.civils > 1 ? "s" : ""}
+              </li>
+              <li>
+                <span className="NewParty-bold">{roles.undercovers}</span>{" "}
+                imposteur
+                {roles.undercovers > 1 ? "s" : ""}
+              </li>
+              <li>
+                <span className="NewParty-bold">{roles.mrwhite}</span> Mr. L
+              </li>
+              <li className="NewParty-marginTop">
+                Temps pour voter :{" "}
+                <span className="NewParty-bold">{timer}</span> minutes
+              </li>
+            </div>
           </ul>
         </div>
         <div className="NewParty-button">
