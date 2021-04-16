@@ -10,6 +10,7 @@ const Header = ({ title, rightTitle, back }) => {
 
   const handleClick = () => {
     if (back === "/") {
+      console.log("handleClick back");
       history.push({ pathname: "/", state: "reload" });
     } else {
       history.push(back);

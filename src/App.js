@@ -45,6 +45,7 @@ const App = () => {
         });
 
         if (response.status === 200) {
+          console.log(response.status);
           setPlayer(response.data.player);
           setReload(false);
         }
