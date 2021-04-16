@@ -279,7 +279,7 @@ const Party = ({ player, api, token, timer }) => {
 
   return (
     <div className="Party">
-      <Header rightTitle="Undercover" back="/" />
+      <Header rightTitle="Imposteur" back="/" />
       {isMrWhiteSubmitted ? (
         <div
           style={{
@@ -291,13 +291,14 @@ const Party = ({ player, api, token, timer }) => {
           {next === "WHITE_WINS" ? (
             <div style={{ textAlign: "center" }}>
               {eliminatedPlayer[0].nickname} (Mr L) a découvert le mot des
-              civils! Il s'agissait de {mrWhiteWord}. Défaite des civils!
+              enquêteurs! Il s'agissait de {mrWhiteWord}. Défaite des
+              enquêteurs!
             </div>
           ) : (
             <>
               <div style={{ textAlign: "center" }}>
                 {eliminatedPlayer[0].nickname} (Mr L) s'est trompé sur le mot
-                des civils, voici le mot qu'il pensait être le bon :{" "}
+                des enquêteurs, voici le mot qu'il pensait être le bon :{" "}
                 {mrWhiteWord}
               </div>
               {player._id === party.moderator_id && (
@@ -335,7 +336,9 @@ const Party = ({ player, api, token, timer }) => {
                   <span style={{ fontWeight: "700" }}>
                     {eliminatedPlayer[0].role === "mrwhite"
                       ? "Mr L"
-                      : eliminatedPlayer[0].role.toUpperCase()}
+                      : eliminatedPlayer[0].role === "civil"
+                      ? "ENQUÊTEUR"
+                      : "IMPOSTEUR"}
                   </span>
                 </div>
               </div>
@@ -385,7 +388,7 @@ const Party = ({ player, api, token, timer }) => {
               >
                 <h2 style={{ textAlign: "center" }}>
                   Tu as été découvert, tentes ta chance et essayes de découvrir
-                  le mot des civils pour gagner
+                  le mot des enquêteurs pour gagner
                 </h2>
                 <Input setInput={setMrWhiteWord} placeholder="ex: chien" />
                 <div style={{ marginTop: "20px" }}>
@@ -402,7 +405,7 @@ const Party = ({ player, api, token, timer }) => {
                 marginTop: "20px",
               }}
             >
-              <h2>Victoire des undercovers! On rejoue ?</h2>
+              <h2>Victoire des imposteurs! On rejoue ?</h2>
               <Button title="Rejouer" onClick={goBackHome} />
             </div>
           ) : next === "NEXT" ? (
@@ -443,7 +446,7 @@ const Party = ({ player, api, token, timer }) => {
                 marginTop: "20px",
               }}
             >
-              <h2>Victoire des civils! On rejoue ?</h2>
+              <h2>Victoire des enquêteurs! On rejoue ?</h2>
               <Button title="Rejouer" onClick={goBackHome} />
             </div>
           )}

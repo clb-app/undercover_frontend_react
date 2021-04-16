@@ -65,7 +65,7 @@ const JoinParty = ({ player, api, setPlayerToken }) => {
 
   return (
     <div className="JoinParty">
-      <Header title="Rejoindre" rightTitle="Undercover" back="/jouer" />
+      <Header title="Rejoindre" rightTitle="Imposteur" back="/jouer" />
       <div className="wrapper">
         <Input
           label="Entre le code de ta partie"

@@ -82,7 +82,7 @@ const NewParty = ({
   console.log(roles);
   return (
     <div className="NewParty">
-      <Header title="Créer" rightTitle="Undercover" back="/jouer" />
+      <Header title="Créer" rightTitle="Imposteur" back="/jouer" />
       <div className="wrapper">
         <div>
           <h2>Paramètres de votre partie :</h2>
