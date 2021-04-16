@@ -17,6 +17,8 @@ import Timer from "../components/Timer.js";
 
 import rocketsImg from "../assets/images/torpedo_2.jpg";
 import civilImg from "../assets/images/emojione_person-shrugging.png";
+import imposteurImg from "../assets/images/imposteur.png";
+import mrlImg from "../assets/images/mr_l.png";
 
 const Party = ({ player, api, token, timer }) => {
   const { code } = useParams();
@@ -63,6 +65,7 @@ const Party = ({ player, api, token, timer }) => {
     socket.on(
       "server-startParty",
       async (party, previousValue, previousPlayerNickname) => {
+        setIsMrWhiteSubmitted(false);
         setParty(party);
         setPlayerPlaying(null);
         setPreviousPlay(null);
@@ -71,7 +74,6 @@ const Party = ({ player, api, token, timer }) => {
         setIsResultDisplayed(false);
         setEliminatedPlayer({});
         setIsTimerActive(false);
-        setIsMrWhiteSubmitted(false);
         setMrWhiteWord("");
         setMinutes(timer);
         setSeconds(0);
@@ -279,22 +281,33 @@ const Party = ({ player, api, token, timer }) => {
     <div className="Party">
       <Header rightTitle="Undercover" back="/" />
       {isMrWhiteSubmitted ? (
-        next === "WHITE_WINS" ? (
-          <div>
-            {eliminatedPlayer.nickname} (Mr L) a découvert le mot des civils! Il
-            s'agissait de {mrWhiteWord}. Défaite des civils!
-          </div>
-        ) : (
-          <>
-            <div>
-              {eliminatedPlayer.nickname} (Mr L) s'est trompé sur le mot des
-              civils, voici le mot qu'il pensait être le bon : {mrWhiteWord}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          {next === "WHITE_WINS" ? (
+            <div style={{ textAlign: "center" }}>
+              {eliminatedPlayer[0].nickname} (Mr L) a découvert le mot des
+              civils! Il s'agissait de {mrWhiteWord}. Défaite des civils!
             </div>
-            {player._id === party.moderator_id && (
-              <Button title="Next" onClick={handleNextLap} />
-            )}
-          </>
-        )
+          ) : (
+            <>
+              <div style={{ textAlign: "center" }}>
+                {eliminatedPlayer[0].nickname} (Mr L) s'est trompé sur le mot
+                des civils, voici le mot qu'il pensait être le bon :{" "}
+                {mrWhiteWord}
+              </div>
+              {player._id === party.moderator_id && (
+                <div style={{ marginTop: "20px" }}>
+                  <Button title="Prochain tour" onClick={handleNextLap} />
+                </div>
+              )}
+            </>
+          )}
+        </div>
       ) : isResultDisplayed ? (
         <div className="Party-results-container">
           {eliminatedPlayer.length === 1 ? (
@@ -307,7 +320,13 @@ const Party = ({ player, api, token, timer }) => {
                   a été éliminé
                 </div>
                 <img
-                  src={civilImg}
+                  src={
+                    eliminatedPlayer[0].role === "civil"
+                      ? civilImg
+                      : eliminatedPlayer[0].role === "undercover"
+                      ? imposteurImg
+                      : mrlImg
+                  }
                   alt="civil"
                   className="Party-isLapOver-img"
                 />
@@ -356,13 +375,22 @@ const Party = ({ player, api, token, timer }) => {
           )}
           {next === "WHITE" ? (
             player._id === eliminatedPlayer[0]._id && (
-              <div>
-                <h2>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  marginTop: "20px",
+                }}
+              >
+                <h2 style={{ textAlign: "center" }}>
                   Tu as été découvert, tentes ta chance et essayes de découvrir
                   le mot des civils pour gagner
                 </h2>
-                <Input setInput={setMrWhiteWord} />
-                <Button title="Valider" onClick={handleMrWhiteWord} />
+                <Input setInput={setMrWhiteWord} placeholder="ex: chien" />
+                <div style={{ marginTop: "20px" }}>
+                  <Button title="Valider" onClick={handleMrWhiteWord} />
+                </div>
               </div>
             )
           ) : next === "OVER" ? (
