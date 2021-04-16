@@ -21,7 +21,7 @@ const LaunchParty = () => {
 
   return (
     <div className="LaunchParty">
-      <Header title="Jouer" rightTitle="Undercover" back="/" />
+      <Header title="Jouer" rightTitle="Imposteur" back="/" />
       <div className="wrapper">
         <div className="LaunchParty-buttons-container">
           <Button title="Créer" onClick={handleNewParty} width="150px" />

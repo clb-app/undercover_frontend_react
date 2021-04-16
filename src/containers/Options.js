@@ -88,7 +88,7 @@ const Options = ({
 
   return (
     <div className="Options">
-      <Header title="Options" rightTitle="Undercover" back="/" />
+      <Header title="Options" rightTitle="Imposteur" back="/" />
       <div className="wrapper">
         <Slider
           style={{ width: "300px", margin: "20px", color: "var(--blue)" }}

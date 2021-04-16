@@ -33,7 +33,7 @@ const Home = ({ player, setReload }) => {
 
   return (
     <div className="Home">
-      <Header title="Undercover" />
+      <Header title="Imposteur" />
       <div className="wrapper">
         <div className="Home-buttons-container">
           <Button
