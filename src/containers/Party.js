@@ -179,7 +179,9 @@ const Party = ({ player, api, token, timer }) => {
     const socket = socketClient(api, { transports: ["websocket"] });
     const inputValue = input.toLowerCase();
     for (let i = 0; i < party.wordsAlreadyUsed.length; i++) {
-      console.log();
+      if (errorInput) {
+        setErrorInput("");
+      }
       if (party.wordsAlreadyUsed[i] === inputValue) {
         setErrorInput(`Le mot ${inputValue} a déjà été joué.`);
         break;
