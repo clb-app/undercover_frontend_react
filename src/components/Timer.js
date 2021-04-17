@@ -13,11 +13,19 @@ const Timer = ({
   player,
   setMinutes,
   handleCountDown,
+  handleStopTimer,
 }) => {
   return isTimerActive ? (
-    <div className="Timer">
-      {minutes} : {seconds < 10 ? `0${seconds}` : seconds}
-    </div>
+    <>
+      <div className="Timer">
+        {minutes} : {seconds < 10 ? `0${seconds}` : seconds}
+      </div>
+      {party.moderator_id === player._id && (
+        <div style={{ marginTop: "20px" }}>
+          <Button title="Stop timer" onClick={handleStopTimer} />
+        </div>
+      )}
+    </>
   ) : (
     party.moderator_id === player._id && (
       <div className="Timer-container">

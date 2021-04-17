@@ -134,6 +134,11 @@ const Party = ({ player, api, token, timer }) => {
       setSeconds(59);
     });
 
+    socket.on("server-stopTimer", () => {
+      setMinutes(0);
+      setSeconds(0);
+    });
+
     socket.on("server-mrWhiteWord", (checkWord, word) => {
       let result = checkWord ? "WHITE_WINS" : "WHITE_OVER";
       setNext(result);
@@ -263,6 +268,11 @@ const Party = ({ player, api, token, timer }) => {
     }
   };
 
+  const handleStopTimer = () => {
+    const socket = socketClient(api, { transports: ["websocket"] });
+    socket.emit("client-stopTimer");
+  };
+
   const handleMrWhiteWord = () => {
     // socket emit client to server
     // io emit server to client
@@ -368,6 +378,7 @@ const Party = ({ player, api, token, timer }) => {
                   player={player}
                   setMinutes={setMinutes}
                   handleCountDown={handleCountDown}
+                  handleStopTimer={handleStopTimer}
                 />
               </div>
               <div>
@@ -484,6 +495,7 @@ const Party = ({ player, api, token, timer }) => {
               player={player}
               setMinutes={setMinutes}
               handleCountDown={handleCountDown}
+              handleStopTimer={handleStopTimer}
             />
           }
           <div className="Party-isLapOver-img-container">
