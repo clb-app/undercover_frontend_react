@@ -8,7 +8,7 @@ import "./LaunchParty.css";
 import Header from "../components/Header";
 import Button from "../components/Button";
 
-const LaunchParty = () => {
+const LaunchParty = ({ setReload }) => {
   const history = useHistory();
 
   const handleNewParty = () => {
@@ -21,7 +21,12 @@ const LaunchParty = () => {
 
   return (
     <div className="LaunchParty">
-      <Header title="Jouer" rightTitle="Imposteur" back="/" />
+      <Header
+        title="Jouer"
+        rightTitle="Imposteur"
+        back="/"
+        setReload={setReload}
+      />
       <div className="wrapper">
         <div className="LaunchParty-buttons-container">
           <Button title="Créer" onClick={handleNewParty} width="150px" />

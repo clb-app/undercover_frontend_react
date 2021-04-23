@@ -5,16 +5,19 @@ import { useHistory } from "react-router-dom";
 // import CSS
 import "./Header.css";
 
-const Header = ({ title, rightTitle, back }) => {
+const Header = ({ title, rightTitle, back, setReload }) => {
   const history = useHistory();
 
   const handleClick = () => {
     if (back === "/") {
       console.log("handleClick back");
-      history.push({ pathname: "/", state: "reload" });
-    } else {
-      history.push(back);
+      setReload(true);
+      // history.push({ pathname: "/", state: "reload" });
     }
+    // else {
+    //   history.push(back);
+    // }
+    history.push(back);
   };
 
   return (
