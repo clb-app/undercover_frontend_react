@@ -63,7 +63,7 @@ const App = () => {
     <Router>
       <Switch>
         <Route path="/jouer">
-          <LaunchParty />
+          <LaunchParty setReload={setReload} />
         </Route>
         <Route path="/options">
           <Options
@@ -73,6 +73,7 @@ const App = () => {
             setTimer={setTimer}
             roles={roles}
             setRoles={setRoles}
+            setReload={setReload}
           />
         </Route>
         <Route path="/creer">
@@ -99,6 +100,7 @@ const App = () => {
             token={token}
             setPlayer={setPlayer}
             timer={timer}
+            setReload={setReload}
           />
         </Route>
         <Route path="/">

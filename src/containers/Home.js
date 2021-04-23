@@ -1,5 +1,5 @@
 import { useHistory, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // import CSS
 import "./Home.css";
@@ -12,12 +12,18 @@ const Home = ({ player, setReload }) => {
   const history = useHistory();
   const location = useLocation();
 
-  const [isAlreadyReloaded, setIsAlreadyReloaded] = useState(false);
+  // const [isAlreadyReloaded, setIsAlreadyReloaded] = useState(false);
 
-  if (location.state === "reload" && !isAlreadyReloaded) {
-    setReload(true);
-    setIsAlreadyReloaded(true);
-  }
+  // useEffect(() => {
+  //   console.log("useEffect from Home");
+  //   setReload(true);
+  // }, []);
+  // document.addEventListener("loadend", () => {
+  //   console.log("home loadend");
+  // });
+  // if (location.state === "reload" && !isAlreadyReloaded) {
+  //   setIsAlreadyReloaded(true);
+  // }
 
   const handlePlay = () => {
     history.push("/jouer");

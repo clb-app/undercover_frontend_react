@@ -18,6 +18,7 @@ const Options = ({
   setTimer,
   roles,
   setRoles,
+  setReload,
 }) => {
   const history = useHistory();
 
@@ -88,7 +89,12 @@ const Options = ({
 
   return (
     <div className="Options">
-      <Header title="Options" rightTitle="Imposteur" back="/" />
+      <Header
+        title="Options"
+        rightTitle="Imposteur"
+        back="/"
+        setReload={setReload}
+      />
       <div className="wrapper">
         <Slider
           style={{ width: "300px", margin: "20px", color: "var(--blue)" }}

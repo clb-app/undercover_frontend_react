@@ -20,7 +20,7 @@ import civilImg from "../assets/images/emojione_person-shrugging.png";
 import imposteurImg from "../assets/images/imposteur.png";
 import mrlImg from "../assets/images/mr_l.png";
 
-const Party = ({ player, api, token, timer }) => {
+const Party = ({ player, api, token, timer, setReload }) => {
   const { code } = useParams();
   const history = useHistory();
 
@@ -174,7 +174,8 @@ const Party = ({ player, api, token, timer }) => {
   }, [seconds]);
 
   const goBackHome = () => {
-    history.push({ pathname: "/", state: "reload" });
+    setReload(true);
+    history.push("/");
   };
 
   const handleStartParty = () => {
@@ -260,7 +261,7 @@ const Party = ({ player, api, token, timer }) => {
             } catch (err) {
               console.log(err);
             }
-          }, 15000);
+          }, 5000);
         }
       }
     } catch (err) {
@@ -289,7 +290,7 @@ const Party = ({ player, api, token, timer }) => {
 
   return (
     <div className="Party">
-      <Header rightTitle="Imposteur" back="/" />
+      <Header rightTitle="Imposteur" back="/" setReload={setReload} />
       {isMrWhiteSubmitted ? (
         <div
           style={{
