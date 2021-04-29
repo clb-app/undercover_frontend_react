@@ -12,11 +12,7 @@ const Header = ({ title, rightTitle, back, setReload }) => {
     if (back === "/") {
       console.log("handleClick back");
       setReload(true);
-      // history.push({ pathname: "/", state: "reload" });
     }
-    // else {
-    //   history.push(back);
-    // }
     history.push(back);
   };
 
