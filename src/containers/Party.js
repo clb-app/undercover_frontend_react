@@ -508,32 +508,40 @@ const Party = ({ player, api, token, timer, setReload }) => {
             <div>C'est l'heure de faire sauter quelqu'un !</div>
             <div>Qui n'a pas sa place?</div>
           </div>
-          <div className="Party-isLapOver-playersList-container">
-            {party.players.map((player) => {
-              if (player.alive) {
-                return (
-                  <div
-                    key={player._id}
-                    onClick={() => handleVoteAgainst(player._id)}
-                    className="Party-isLapOver-player"
-                    style={
-                      playerVoteAgainst
-                        ? playerVoteAgainst._id === player._id
-                          ? {
-                              background: "red",
-                              color: "#fff",
-                            }
+          <div className="Party-isLapOver-bottom-container">
+            <div className="Party-isLapOver-playersList-container">
+              {party.players.map((player) => {
+                if (player.alive) {
+                  return (
+                    <div
+                      key={player._id}
+                      onClick={() => handleVoteAgainst(player._id)}
+                      className="Party-isLapOver-player"
+                      style={
+                        playerVoteAgainst
+                          ? playerVoteAgainst._id === player._id
+                            ? {
+                                background: "red",
+                                color: "#fff",
+                              }
+                            : { background: "#EDEEEF" }
                           : { background: "#EDEEEF" }
-                        : { background: "#EDEEEF" }
-                    }
-                  >
-                    {player.nickname}
-                  </div>
-                );
-              } else {
-                return <div key={player._id}></div>;
-              }
-            })}
+                      }
+                    >
+                      {player.nickname}
+                    </div>
+                  );
+                } else {
+                  return <div key={player._id}></div>;
+                }
+              })}
+            </div>
+            <div className="PartyInProgress-right-container Party-isLapOver-wordsList-container">
+              <h2>Liste de mots :</h2>
+              {words.map((word, index) => {
+                return <p key={index}>{word}</p>;
+              })}
+            </div>
           </div>
         </div>
       ) : isPartyStarted ? (

@@ -39,6 +39,12 @@
   margin-bottom: 20px;
   margin-top: 20px;
 }
+.Party-isLapOver-bottom-container {
+  display: flex;
+  position: relative;
+  width: 400px;
+  justify-content: center;
+}
 .Party-isLapOver-playersList-container {
   background-color: #fff;
   width: 300px;
@@ -47,6 +53,10 @@
 .Party-isLapOver-player {
   padding: 20px;
   margin: 5px;
+}
+.Party-isLapOver-wordsList-container {
+  position: absolute;
+  right: -200px;
 }
 
 .Party-results-container {
