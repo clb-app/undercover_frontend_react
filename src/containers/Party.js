@@ -453,15 +453,7 @@ const Party = ({ player, api, token, timer, setReload }) => {
                         : { background: "#EDEEEF" }
                     }
                   >
-                    {player.nickname}{" "}
-                    {player.voteAgainst ? (
-                      <img
-                        src={votedIcon}
-                        style={{ width: "30px", height: "30px" }}
-                      />
-                    ) : (
-                      ""
-                    )}
+                    {player.nickname}
                   </div>
                 );
               })}
