@@ -34,9 +34,11 @@ const App = () => {
   const [timer, setTimer] = useState(3);
   const [roles, setRoles] = useState({ civils: 3, undercovers: 1, mrwhite: 0 });
 
+  console.log(token);
   useEffect(() => {
     if (token && reload) {
       console.log("useEffect");
+      setReload(false);
       (async () => {
         const response = await axios.get(`${api}/player?reload=true`, {
           headers: {
@@ -47,7 +49,6 @@ const App = () => {
         if (response.status === 200) {
           console.log(response.status);
           setPlayer(response.data.player);
-          setReload(false);
         }
       })();
     }
