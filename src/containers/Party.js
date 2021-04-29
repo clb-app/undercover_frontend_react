@@ -19,6 +19,7 @@ import rocketsImg from "../assets/images/torpedo_2.jpg";
 import civilImg from "../assets/images/emojione_person-shrugging.png";
 import imposteurImg from "../assets/images/imposteur.png";
 import mrlImg from "../assets/images/mr_l.png";
+import votedIcon from "../assets/icons/vote-positif.png";
 
 const Party = ({ player, api, token, timer, setReload }) => {
   const { code } = useParams();
@@ -139,6 +140,10 @@ const Party = ({ player, api, token, timer, setReload }) => {
       setSeconds(0);
     });
 
+    socket.on("server-updateVotes", (newParty) => {
+      setParty(newParty);
+    });
+
     socket.on("server-mrWhiteWord", (checkWord, word) => {
       let result = checkWord ? "WHITE_WINS" : "WHITE_OVER";
       setNext(result);
@@ -225,6 +230,10 @@ const Party = ({ player, api, token, timer, setReload }) => {
 
         if (response.status === 200) {
           setPlayerVoteAgainst(response.data);
+          if (!playerVoteAgainst) {
+            const socket = socketClient(api, { transports: ["websocket"] });
+            socket.emit("client-updateVotes", party._id);
+          }
         }
       } catch (err) {
         console.log(err);
@@ -444,7 +453,15 @@ const Party = ({ player, api, token, timer, setReload }) => {
                         : { background: "#EDEEEF" }
                     }
                   >
-                    {player.nickname}
+                    {player.nickname}{" "}
+                    {player.voteAgainst ? (
+                      <img
+                        src={votedIcon}
+                        style={{ width: "30px", height: "30px" }}
+                      />
+                    ) : (
+                      ""
+                    )}
                   </div>
                 );
               })}
@@ -528,7 +545,15 @@ const Party = ({ player, api, token, timer, setReload }) => {
                           : { background: "#EDEEEF" }
                       }
                     >
-                      {player.nickname}
+                      {player.nickname}{" "}
+                      {player.voteAgainst ? (
+                        <img
+                          src={votedIcon}
+                          style={{ width: "30px", height: "30px" }}
+                        />
+                      ) : (
+                        ""
+                      )}
                     </div>
                   );
                 } else {
