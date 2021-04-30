@@ -51,6 +51,8 @@ const App = () => {
           setPlayer(response.data.player);
         }
       })();
+    } else {
+      setReload(false);
     }
   }, [reload]);
 
