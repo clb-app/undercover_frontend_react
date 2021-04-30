@@ -1,3 +1,9 @@
+.Party-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 200px;
+}
 .Party-lobby-players-container {
   background-color: #e9eaeb;
   width: 300px;

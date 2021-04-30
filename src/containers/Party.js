@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import socketClient from "socket.io-client";
 import axios from "axios";
-import { Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Loader from "react-loader-spinner";
 
 // import CSS
 import "./Party.css";
@@ -45,6 +45,9 @@ const Party = ({ player, api, token, timer, setReload }) => {
   const [isMrWhiteSubmitted, setIsMrWhiteSubmitted] = useState(false);
   const [words, setWords] = useState([]);
   const [myWord, setMyWord] = useState(null);
+  const [isStartBtnLoading, setIsStartBtnLoading] = useState(false);
+  const [isPlayBtnLoading, setIsPlayBtnLoading] = useState(false);
+  const [isNextLapBtnLoading, setIsNextLapBtnLoading] = useState(false);
 
   useEffect(() => {
     const socket = socketClient(api, { transports: ["websocket"] });
@@ -79,7 +82,8 @@ const Party = ({ player, api, token, timer, setReload }) => {
         setMinutes(timer);
         setSeconds(0);
         setNext(null);
-
+        setIsPlayBtnLoading(false);
+        setIsNextLapBtnLoading(false);
         if (!myWord) {
           for (let i = 0; i < party.players.length; i++) {
             if (token === party.players[i].token) {
@@ -184,11 +188,13 @@ const Party = ({ player, api, token, timer, setReload }) => {
   };
 
   const handleStartParty = () => {
+    setIsStartBtnLoading(true);
     const socket = socketClient(api, { transports: ["websocket"] });
     socket.emit("startParty", code);
   };
 
   const handlePlay = () => {
+    setIsPlayBtnLoading(true);
     const socket = socketClient(api, { transports: ["websocket"] });
     const inputValue = input.toLowerCase();
     for (let i = 0; i < party.wordsAlreadyUsed.length; i++) {
@@ -197,6 +203,7 @@ const Party = ({ player, api, token, timer, setReload }) => {
       }
       if (party.wordsAlreadyUsed[i] === inputValue) {
         setErrorInput(`Le mot ${inputValue} a déjà été joué.`);
+        setIsPlayBtnLoading(false);
         break;
       } else if (i + 1 === party.wordsAlreadyUsed.length) {
         const newWords = [...words];
@@ -291,6 +298,7 @@ const Party = ({ player, api, token, timer, setReload }) => {
   };
 
   const handleNextLap = () => {
+    setIsNextLapBtnLoading(true);
     const socket = socketClient(api, { transports: ["websocket"] });
     socket.emit("client-nextLap", party, eliminatedPlayer[0]);
   };
@@ -323,7 +331,11 @@ const Party = ({ player, api, token, timer, setReload }) => {
               </div>
               {player._id === party.moderator_id && (
                 <div style={{ marginTop: "20px" }}>
-                  <Button title="Prochain tour" onClick={handleNextLap} />
+                  <Button
+                    title="Prochain tour"
+                    onClick={handleNextLap}
+                    isLoading={isNextLapBtnLoading}
+                  />
                 </div>
               )}
             </>
@@ -431,7 +443,11 @@ const Party = ({ player, api, token, timer, setReload }) => {
             </div>
           ) : next === "NEXT" ? (
             player._id === party.moderator_id && (
-              <Button title="Prochain tour" onClick={handleNextLap} />
+              <Button
+                title="Prochain tour"
+                onClick={handleNextLap}
+                isLoading={isNextLapBtnLoading}
+              />
             )
           ) : next === "EQUAL" ? (
             <div className="Party-isLapOver-playersList-container">
@@ -580,11 +596,14 @@ const Party = ({ player, api, token, timer, setReload }) => {
           handlePlay={handlePlay}
           myWord={myWord}
           errorInput={errorInput}
+          isBtnLoading={isPlayBtnLoading}
         />
       ) : (
         <>
           {isLoading ? (
-            <div>Chargement</div>
+            <div className="Party-loader">
+              <Loader type="Grid" color="var(--blue)" />
+            </div>
           ) : (
             <div className="wrapper">
               <div>
@@ -613,7 +632,11 @@ const Party = ({ player, api, token, timer, setReload }) => {
               {player &&
                 (party.moderator_id === player._id ? (
                   party.players.length === playersNumber ? (
-                    <Button title="Démarrer" onClick={handleStartParty} />
+                    <Button
+                      title="Démarrer"
+                      onClick={handleStartParty}
+                      isLoading={isStartBtnLoading}
+                    />
                   ) : (
                     <Button
                       title="Démarrer"

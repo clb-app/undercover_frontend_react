@@ -16,10 +16,13 @@ const JoinParty = ({ player, api, setPlayerToken }) => {
   const [code, setCode] = useState("");
   const [isPlayerUnknown, setIsPlayerUnknown] = useState(false);
   const [nickname, setNickname] = useState("");
+  const [isSubmitBtnLoading, setIsSubmitBtnLoading] = useState(false);
+  const [isPseudoBtnLoading, setIsPseudoBtnLoading] = useState(false);
 
   const history = useHistory();
 
   const handleSubmit = async () => {
+    setIsSubmitBtnLoading(true);
     if (!player) {
       setIsPlayerUnknown(true);
     } else {
@@ -40,6 +43,7 @@ const JoinParty = ({ player, api, setPlayerToken }) => {
   };
 
   const handleSubmitWithPseudo = async () => {
+    setIsPseudoBtnLoading(true);
     if (nickname.length > 1) {
       const token = uid2(16);
 
@@ -73,11 +77,19 @@ const JoinParty = ({ player, api, setPlayerToken }) => {
           setInput={setCode}
         />
         <div className="JoinParty-btn-container">
-          <Button title="Valider" onClick={handleSubmit} />
+          <Button
+            title="Valider"
+            onClick={handleSubmit}
+            isLoading={isSubmitBtnLoading}
+          />
         </div>
       </div>
       {isPlayerUnknown && (
-        <EnterPseudo setInput={setNickname} onClick={handleSubmitWithPseudo} />
+        <EnterPseudo
+          setInput={setNickname}
+          onClick={handleSubmitWithPseudo}
+          isBtnLoading={isPseudoBtnLoading}
+        />
       )}
     </div>
   );

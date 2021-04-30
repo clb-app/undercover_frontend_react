@@ -16,6 +16,7 @@ const PartyInProgress = ({
   handlePlay,
   myWord,
   errorInput,
+  isBtnLoading,
 }) => {
   console.log("partyInProgress =", playerPlaying);
   return (
@@ -69,7 +70,11 @@ const PartyInProgress = ({
                     </p>
                   )}
                   <div className="PartyInProgress-btn">
-                    <Button title="Valider" onClick={handlePlay} />
+                    <Button
+                      title="Valider"
+                      onClick={handlePlay}
+                      isLoading={isBtnLoading}
+                    />
                   </div>
                 </div>
               ) : playerPlaying === "last" ? (

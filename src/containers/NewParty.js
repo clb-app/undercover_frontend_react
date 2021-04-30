@@ -22,10 +22,13 @@ const NewParty = ({
 }) => {
   const [isPlayerUnknown, setIsPlayerUnknown] = useState(false);
   const [nickname, setNickname] = useState("");
+  const [isBtnLoading, setIsBtnLoading] = useState(false);
 
   const history = useHistory();
 
   const handleSubmit = async () => {
+    console.log("submitted");
+    setIsBtnLoading(true);
     if (!player) {
       setIsPlayerUnknown(true);
     } else {
@@ -42,7 +45,6 @@ const NewParty = ({
             },
           }
         );
-
         if (response.status === 200) {
           history.push(`/partie/${response.data.party.code}`);
         }
@@ -112,7 +114,11 @@ const NewParty = ({
           </ul>
         </div>
         <div className="NewParty-button">
-          <Button title="Valider" onClick={handleSubmit} />
+          <Button
+            title="Valider"
+            onClick={handleSubmit}
+            isLoading={isBtnLoading}
+          />
         </div>
       </div>
       {isPlayerUnknown && (

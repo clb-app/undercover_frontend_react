@@ -7,7 +7,7 @@ import "./EnterPseudo.css";
 import Input from "./Input";
 import Button from "./Button";
 
-const EnterPseudo = ({ setInput, onClick }) => {
+const EnterPseudo = ({ setInput, onClick, isBtnLoading }) => {
   return (
     <div className="modal-container">
       <div className="modal">
@@ -17,7 +17,12 @@ const EnterPseudo = ({ setInput, onClick }) => {
           setInput={setInput}
           type="text"
         />
-        <Button title="Valider" onClick={onClick} width="200px" />
+        <Button
+          title="Valider"
+          onClick={onClick}
+          width="200px"
+          isLoading={isBtnLoading}
+        />
       </div>
     </div>
   );
