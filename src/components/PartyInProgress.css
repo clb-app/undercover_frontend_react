@@ -25,6 +25,14 @@
 .PartyInProgress > div {
   flex: 1;
 }
+.PartyInProgress-timer-container {
+  margin-bottom: 10px;
+  width: 300px;
+  font-size: 30px;
+  color: red;
+  display: flex;
+  justify-content: center;
+}
 .PartyInProgress-players-container {
   background-color: #edeeef;
   width: 300px;

@@ -17,12 +17,22 @@ const PartyInProgress = ({
   myWord,
   errorInput,
   isBtnLoading,
+  playerTimer,
+  isPlayerTimerActive,
 }) => {
   console.log("partyInProgress =", playerPlaying);
   return (
     <div className="wrapper">
       <div className="PartyInProgress">
         <div className="PartyInProgress-left-container">
+          {isPlayerTimerActive && (
+            <div className="PartyInProgress-timer-container">
+              {playerTimer === 60
+                ? "01:00"
+                : `00:${playerTimer > 9 ? playerTimer : `0${playerTimer}`}`}
+              {/* 00:{playerTimer > 9 ? playerTimer : `0${playerTimer}`} */}
+            </div>
+          )}
           <div className="PartyInProgress-players-container">
             {party.players.map((player) => {
               return (

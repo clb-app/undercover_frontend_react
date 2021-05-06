@@ -48,6 +48,8 @@ const Party = ({ player, api, token, timer, setReload }) => {
   const [isStartBtnLoading, setIsStartBtnLoading] = useState(false);
   const [isPlayBtnLoading, setIsPlayBtnLoading] = useState(false);
   const [isNextLapBtnLoading, setIsNextLapBtnLoading] = useState(false);
+  const [playerTimer, setPlayerTimer] = useState(30);
+  const [isPlayerTimerActive, setIsPlayerTimerActive] = useState(false);
 
   useEffect(() => {
     const socket = socketClient(api, { transports: ["websocket"] });
@@ -101,6 +103,9 @@ const Party = ({ player, api, token, timer, setReload }) => {
                 nickname: previousPlayerNickname,
               });
             }
+
+            setPlayerTimer(party.timer);
+            setIsPlayerTimerActive(true);
             break;
           } else if (i + 1 === party.players.length) {
             setPreviousPlay({
@@ -108,6 +113,8 @@ const Party = ({ player, api, token, timer, setReload }) => {
               nickname: previousPlayerNickname,
             });
 
+            setPlayerTimer(0);
+            setIsPlayerTimerActive(false);
             setPlayerPlaying("last");
             setTimeout(() => {
               socket.emit("client-lapOver", party);
@@ -180,7 +187,22 @@ const Party = ({ player, api, token, timer, setReload }) => {
 
       return () => clearInterval(timer);
     }
-  }, [seconds]);
+    if (isPlayerTimerActive) {
+      const timer = setInterval(() => {
+        console.log(playerTimer);
+        if (playerTimer > 0) {
+          console.log("if");
+          setPlayerTimer(playerTimer - 1);
+        } else if (playerTimer === 0) {
+          console.log("else");
+          handlePlay();
+          clearInterval(timer);
+        }
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [seconds, playerTimer, isPlayerTimerActive]);
 
   const goBackHome = () => {
     setReload(true);
@@ -194,29 +216,34 @@ const Party = ({ player, api, token, timer, setReload }) => {
   };
 
   const handlePlay = () => {
+    console.log("handlePlay");
     setIsPlayBtnLoading(true);
     const socket = socketClient(api, { transports: ["websocket"] });
-    const inputValue = input.toLowerCase();
-    for (let i = 0; i < party.wordsAlreadyUsed.length; i++) {
-      if (errorInput) {
-        setErrorInput("");
+    if (input) {
+      const inputValue = input.toLowerCase();
+      for (let i = 0; i < party.wordsAlreadyUsed.length; i++) {
+        if (errorInput) {
+          setErrorInput("");
+        }
+        if (party.wordsAlreadyUsed[i] === inputValue) {
+          setErrorInput(`Le mot ${inputValue} a déjà été joué.`);
+          setIsPlayBtnLoading(false);
+          break;
+        } else if (i + 1 === party.wordsAlreadyUsed.length) {
+          const newWords = [...words];
+          newWords.push(inputValue);
+          setWords(newWords);
+          socket.emit("client-play", inputValue, playerPlaying);
+        }
       }
-      if (party.wordsAlreadyUsed[i] === inputValue) {
-        setErrorInput(`Le mot ${inputValue} a déjà été joué.`);
-        setIsPlayBtnLoading(false);
-        break;
-      } else if (i + 1 === party.wordsAlreadyUsed.length) {
+      if (party.wordsAlreadyUsed.length === 0) {
         const newWords = [...words];
         newWords.push(inputValue);
         setWords(newWords);
         socket.emit("client-play", inputValue, playerPlaying);
       }
-    }
-    if (party.wordsAlreadyUsed.length === 0) {
-      const newWords = [...words];
-      newWords.push(inputValue);
-      setWords(newWords);
-      socket.emit("client-play", inputValue, playerPlaying);
+    } else {
+      setIsPlayBtnLoading(false);
     }
   };
 
@@ -596,6 +623,8 @@ const Party = ({ player, api, token, timer, setReload }) => {
           myWord={myWord}
           errorInput={errorInput}
           isBtnLoading={isPlayBtnLoading}
+          playerTimer={playerTimer}
+          isPlayerTimerActive={isPlayerTimerActive}
         />
       ) : (
         <>

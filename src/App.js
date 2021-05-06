@@ -23,8 +23,8 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faArrowLeft, faStar } from "@fortawesome/free-solid-svg-icons";
 library.add(faArrowLeft, faStar);
 
-// const api = "http://localhost:3001"; // local
-const api = "https://clb-undercover-nodejs.herokuapp.com"; // prod
+const api = "http://localhost:3001"; // local
+// const api = "https://clb-undercover-nodejs.herokuapp.com"; // prod
 
 const App = () => {
   const [token, setToken] = useState(Cookies.get("token") || null);
@@ -33,6 +33,7 @@ const App = () => {
   const [playersNumber, setPlayersNumber] = useState(4);
   const [timer, setTimer] = useState(3);
   const [roles, setRoles] = useState({ civils: 3, undercovers: 1, mrwhite: 0 });
+  const [timerToPlay, setTimerToPlay] = useState(30);
 
   console.log(token);
   useEffect(() => {
@@ -77,6 +78,8 @@ const App = () => {
             roles={roles}
             setRoles={setRoles}
             setReload={setReload}
+            timerToPlay={timerToPlay}
+            setTimerToPlay={setTimerToPlay}
           />
         </Route>
         <Route path="/creer">
@@ -87,6 +90,7 @@ const App = () => {
             playersNumber={playersNumber}
             timer={timer}
             roles={roles}
+            timerToPlay={timerToPlay}
           />
         </Route>
         <Route path="/rejoindre">
