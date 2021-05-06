@@ -326,8 +326,7 @@ const Party = ({ player, api, token, timer, setReload }) => {
             <>
               <div style={{ textAlign: "center" }}>
                 {eliminatedPlayer[0].nickname} (Mr L) s'est trompé sur le mot
-                des enquêteurs, voici le mot qu'il pensait être le bon :{" "}
-                {mrWhiteWord}
+                des enquêteurs.
               </div>
               {player._id === party.moderator_id && (
                 <div style={{ marginTop: "20px" }}>
