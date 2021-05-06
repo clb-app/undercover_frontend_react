@@ -19,6 +19,7 @@ const NewParty = ({
   playersNumber,
   timer,
   roles,
+  timerToPlay,
 }) => {
   const [isPlayerUnknown, setIsPlayerUnknown] = useState(false);
   const [nickname, setNickname] = useState("");
@@ -38,6 +39,7 @@ const NewParty = ({
           {
             playersNumber,
             roles,
+            timer: timerToPlay,
           },
           {
             headers: {
@@ -64,6 +66,7 @@ const NewParty = ({
           playersNumber,
           roles,
           nickname,
+          timer: timerToPlay,
         },
         {
           headers: {
@@ -81,7 +84,6 @@ const NewParty = ({
     }
   };
 
-  console.log(roles);
   return (
     <div className="NewParty">
       <Header title="Créer" rightTitle="Imposteur" back="/jouer" />
@@ -109,6 +111,10 @@ const NewParty = ({
               <li className="NewParty-marginTop">
                 Temps pour voter :{" "}
                 <span className="NewParty-bold">{timer}</span> minutes
+              </li>
+              <li style={{ marginTop: "10px" }}>
+                Temps pour jouer :{" "}
+                <span className="NewParty-bold">{timerToPlay}</span> secondes
               </li>
             </div>
           </ul>

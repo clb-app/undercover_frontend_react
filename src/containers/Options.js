@@ -19,6 +19,8 @@ const Options = ({
   roles,
   setRoles,
   setReload,
+  timerToPlay,
+  setTimerToPlay,
 }) => {
   const history = useHistory();
 
@@ -116,6 +118,7 @@ const Options = ({
           <RoleItem value={roles.mrwhite} role="Mr. L" />
         </div>
         <div className="Options-timer-container">
+          <div className="Options-timer-text">Temps de vote : </div>
           <FormControl>
             <Select
               labelId="select-minutes"
@@ -123,14 +126,28 @@ const Options = ({
               value={timer}
               onChange={(e) => setTimer(e.target.value)}
             >
-              <MenuItem value={1}>1</MenuItem>
-              <MenuItem value={2}>2</MenuItem>
-              <MenuItem value={3}>3</MenuItem>
-              <MenuItem value={4}>4</MenuItem>
-              <MenuItem value={5}>5</MenuItem>
+              <MenuItem value={1}>1 minute</MenuItem>
+              <MenuItem value={2}>2 minutes</MenuItem>
+              <MenuItem value={3}>3 minutes</MenuItem>
+              <MenuItem value={4}>4 minutes</MenuItem>
+              <MenuItem value={5}>5 minutes</MenuItem>
             </Select>
           </FormControl>
-          <div className="Options-timer-text">Temps de vote</div>
+        </div>
+        <div className="Options-timer-container">
+          <div className="Options-timer-text">Temps pour jouer :</div>
+          <FormControl>
+            <Select
+              labelId="select-timer-player"
+              id="select-timer-player"
+              value={timerToPlay}
+              onChange={(e) => setTimerToPlay(e.target.value)}
+            >
+              <MenuItem value={30}>30 secondes</MenuItem>
+              <MenuItem value={45}>45 secondes</MenuItem>
+              <MenuItem value={60}>60 secondes</MenuItem>
+            </Select>
+          </FormControl>
         </div>
         <div className="NewParty-button">
           <Button
