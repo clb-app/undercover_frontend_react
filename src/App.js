@@ -23,8 +23,8 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faArrowLeft, faStar } from "@fortawesome/free-solid-svg-icons";
 library.add(faArrowLeft, faStar);
 
-const api = "http://localhost:3001"; // local
-// const api = "https://clb-undercover-nodejs.herokuapp.com"; // prod
+// const api = "http://localhost:3001"; // local
+const api = "https://clb-undercover-nodejs.herokuapp.com"; // prod
 
 const App = () => {
   const [token, setToken] = useState(Cookies.get("token") || null);
